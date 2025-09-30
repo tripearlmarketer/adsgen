@@ -7,6 +7,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
+        select {
+            color: white !important;
+            background-color: rgb(31, 41, 55) !important;
+        }
+        
+        select option {
+            color: white !important;
+            background-color: rgb(31, 41, 55) !important;
+            padding: 8px;
+        }
+        
+        select option:hover {
+            background-color: rgb(55, 65, 81) !important;
+        }
         .glassmorphism {
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(20px);
@@ -162,7 +176,7 @@
                 <div class="grid grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-medium mb-2">Campaign Type</label>
-                        <select id="campaignType" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-400" onchange="validateForm()">
+                        <select id="campaignType" class="w-full px-4 py-3 bg-gray-800 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-400" onchange="validateForm()">
                             <option value="demand-generation">Demand Generation</option>
                             <option value="search">Search</option>
                             <option value="display">Display</option>
@@ -173,7 +187,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-2">Campaign Goal</label>
-                        <select id="campaignGoal" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-400" onchange="validateForm()">
+                        <select id="campaignGoal" class="w-full px-4 py-3 bg-gray-800 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-400" onchange="validateForm()">
                             <option value="lead-generation">Lead Generation</option>
                             <option value="sales">Sales</option>
                             <option value="brand-awareness">Brand Awareness</option>
