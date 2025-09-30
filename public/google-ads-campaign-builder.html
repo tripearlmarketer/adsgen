@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Campaign - DemandGen Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .campaign-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .campaign-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .template-badge {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .audience-tag {
+            background: rgba(103, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid rgba(103, 126, 234, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .performance-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .performance-excellent { color: #10b981; }
+        .performance-good { color: #f59e0b; }
+        .performance-average { color: #6b7280; }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg">
+    <!-- Header -->
+    <header class="glassmorphism border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white">DemandGen Pro</h1>
+                        <p class="text-white/70 text-sm">Campaign Builder</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.location.href='modern-user-dashboard.html'" class="text-white/80 hover:text-white transition-colors">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <button class="text-white/80 hover:text-white transition-colors">
+                        <i data-lucide="help-circle" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Page Title -->
+        <div class="text-center mb-12 animate-fade-in">
+            <h2 class="text-4xl font-bold text-white mb-4">Create New Campaign</h2>
+            <p class="text-white/80 text-lg max-w-2xl mx-auto">Choose how you'd like to create your Google Ads Demand Generation campaign. We've optimized everything for the Malaysia market.</p>
+        </div>
+
+        <!-- Campaign Creation Options -->
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+            <!-- Quick Setup -->
+            <div class="campaign-card rounded-2xl p-8 text-center animate-slide-up" style="animation-delay: 0.1s">
+                <div class="w-16 h-16 bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="zap" class="w-8 h-8 text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-4">Quick Setup</h3>
+                <p class="text-white/70 mb-6">Pre-configured campaigns with proven Malaysia audiences. Launch in 2 minutes!</p>
+                
+                <div class="space-y-3 mb-6">
+                    <div class="audience-tag">🚬 Smoking Cessation (280K)</div>
+                    <div class="audience-tag">🌿 Health & Wellness (420K)</div>
+                    <div class="audience-tag">🏢 Working Professionals (350K)</div>
+                </div>
+                
+                <div class="performance-indicator performance-excellent mb-6">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    <span>4.2% avg CTR</span>
+                </div>
+                
+                <button onclick="showQuickSetupOptions()" class="w-full bg-gradient-to-r from-green-400 to-blue-500 text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg transition-all">
+                    Choose Quick Setup
+                </button>
+            </div>
+
+            <!-- Malaysia Templates -->
+            <div class="campaign-card rounded-2xl p-8 text-center animate-slide-up" style="animation-delay: 0.2s">
+                <div class="w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="flag" class="w-8 h-8 text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-4">Malaysia Templates</h3>
+                <p class="text-white/70 mb-6">Festival-ready campaigns with cultural intelligence and local optimization.</p>
+                
+                <div class="space-y-3 mb-6">
+                    <div class="audience-tag">🪔 Deepavali Campaign</div>
+                    <div class="audience-tag">🧧 Chinese New Year</div>
+                    <div class="audience-tag">🌙 Hari Raya Special</div>
+                </div>
+                
+                <div class="performance-indicator performance-excellent mb-6">
+                    <i data-lucide="star" class="w-4 h-4"></i>
+                    <span>89% higher engagement</span>
+                </div>
+                
+                <button onclick="showMalaysiaTemplates()" class="w-full bg-gradient-to-r from-purple-400 to-pink-500 text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg transition-all">
+                    Browse Templates
+                </button>
+            </div>
+
+            <!-- Custom Setup -->
+            <div class="campaign-card rounded-2xl p-8 text-center animate-slide-up" style="animation-delay: 0.3s">
+                <div class="w-16 h-16 bg-gradient-to-r from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="settings" class="w-8 h-8 text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-4">Custom Setup</h3>
+                <p class="text-white/70 mb-6">Build from scratch with full control over targeting, budget, and creative assets.</p>
+                
+                <div class="space-y-3 mb-6">
+                    <div class="audience-tag">🎯 Custom Targeting</div>
+                    <div class="audience-tag">💰 Flexible Budget</div>
+                    <div class="audience-tag">🎨 Your Creatives</div>
+                </div>
+                
+                <div class="performance-indicator performance-good mb-6">
+                    <i data-lucide="tool" class="w-4 h-4"></i>
+                    <span>Full customization</span>
+                </div>
+                
+                <button onclick="window.location.href='modern-campaign-builder.html'" class="w-full bg-gradient-to-r from-orange-400 to-red-500 text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg transition-all">
+                    Start Custom Build
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Setup Options (Hidden by default) -->
+        <div id="quickSetupOptions" class="hidden">
+            <div class="glassmorphism rounded-2xl p-8 mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-white">Quick Setup Campaigns</h3>
+                    <button onclick="hideQuickSetupOptions()" class="text-white/70 hover:text-white">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Smoking Cessation Campaign -->
+                    <div class="bg-white/10 rounded-xl p-6 border border-white/20">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-2">🚬 Smoking Cessation Malaysia</h4>
+                                <p class="text-white/70 text-sm">Target Malaysian smokers ready to quit with health-focused messaging</p>
+                            </div>
+                            <span class="template-badge">PROVEN</span>
+                        </div>
+                        
+                        <div class="space-y-3 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Target Audience:</span>
+                                <span class="text-white">280K Malaysian smokers</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Suggested Budget:</span>
+                                <span class="text-white">RM 50-100/day</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Expected CTR:</span>
+                                <span class="text-green-400">4.2%</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Languages:</span>
+                                <span class="text-white">Bahasa, English, Chinese</span>
+                            </div>
+                        </div>
+                        
+                        <button onclick="createQuickCampaign('smoking-cessation')" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
+                            Create This Campaign
+                        </button>
+                    </div>
+
+                    <!-- Health & Wellness Campaign -->
+                    <div class="bg-white/10 rounded-xl p-6 border border-white/20">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-2">🌿 Health & Wellness Malaysia</h4>
+                                <p class="text-white/70 text-sm">Target health-conscious Malaysians interested in supplements and wellness</p>
+                            </div>
+                            <span class="template-badge">POPULAR</span>
+                        </div>
+                        
+                        <div class="space-y-3 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Target Audience:</span>
+                                <span class="text-white">420K health enthusiasts</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Suggested Budget:</span>
+                                <span class="text-white">RM 75-150/day</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Expected CTR:</span>
+                                <span class="text-green-400">3.8%</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Languages:</span>
+                                <span class="text-white">Bahasa, English, Tamil</span>
+                            </div>
+                        </div>
+                        
+                        <button onclick="createQuickCampaign('health-wellness')" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
+                            Create This Campaign
+                        </button>
+                    </div>
+
+                    <!-- Outdoor Workers Campaign -->
+                    <div class="bg-white/10 rounded-xl p-6 border border-white/20">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-2">🚛 Pekerja Luar Malaysia</h4>
+                                <p class="text-white/70 text-sm">Target outdoor workers with health and safety products</p>
+                            </div>
+                            <span class="template-badge">NICHE</span>
+                        </div>
+                        
+                        <div class="space-y-3 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Target Audience:</span>
+                                <span class="text-white">150K outdoor workers</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Suggested Budget:</span>
+                                <span class="text-white">RM 30-60/day</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Expected CTR:</span>
+                                <span class="text-yellow-400">2.9%</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Languages:</span>
+                                <span class="text-white">Bahasa, English</span>
+                            </div>
+                        </div>
+                        
+                        <button onclick="createQuickCampaign('outdoor-workers')" class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
+                            Create This Campaign
+                        </button>
+                    </div>
+
+                    <!-- Professional Services Campaign -->
+                    <div class="bg-white/10 rounded-xl p-6 border border-white/20">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-2">🏢 Professional Services</h4>
+                                <p class="text-white/70 text-sm">Target working professionals in KL, Selangor, and Penang</p>
+                            </div>
+                            <span class="template-badge">HIGH ROI</span>
+                        </div>
+                        
+                        <div class="space-y-3 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Target Audience:</span>
+                                <span class="text-white">350K professionals</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Suggested Budget:</span>
+                                <span class="text-white">RM 100-200/day</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Expected CTR:</span>
+                                <span class="text-green-400">5.1%</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-white/70">Languages:</span>
+                                <span class="text-white">English, Chinese, Bahasa</span>
+                            </div>
+                        </div>
+                        
+                        <button onclick="createQuickCampaign('professional-services')" class="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
+                            Create This Campaign
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Malaysia Templates (Hidden by default) -->
+        <div id="malaysiaTemplates" class="hidden">
+            <div class="glassmorphism rounded-2xl p-8 mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-white">Malaysia Festival Templates</h3>
+                    <button onclick="hideMalaysiaTemplates()" class="text-white/70 hover:text-white">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Deepavali Template -->
+                    <div class="bg-gradient-to-br from-orange-500/20 to-yellow-500/20 rounded-xl p-6 border border-orange-300/30">
+                        <div class="text-center mb-4">
+                            <div class="text-4xl mb-2">🪔</div>
+                            <h4 class="text-xl font-bold text-white mb-2">Deepavali Campaign</h4>
+                            <p class="text-white/70 text-sm">Target Tamil community with festival-specific messaging</p>
+                        </div>
+                        
+                        <div class="space-y-2 mb-4 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-white/70">Audience:</span>
+                                <span class="text-white">Tamil community (180K)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/70">Peak Period:</span>
+                                <span class="text-white">Oct 28 - Nov 5</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/70">Engagement:</span>
+                                <span class="text-green-400">+89% higher</span>
+                            </div>
+                        </div>
+                        
+                        <button onclick="createFestivalCampaign('deepavali')" class="w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white py-3 px-4 rounded-lg font-semibold">
+                            Use Deepavali Template
+                        </button>
+                    </div>
+
+                    <!-- Chinese New Year Template -->
+                    <div class="bg-gradient-to-br from-red-500/20 to-yellow-500/20 rounded-xl p-6 border border-red-300/30">
+                        <div class="text-center mb-4">
+                            <div class="text-4xl mb-2">🧧</div>
+                            <h4 class="text-xl font-bold text-white mb-2">Chinese New Year</h4>
+                            <p class="text-white/70 text-sm">Target Chinese community with prosperity messaging</p>
+                        </div>
+                        
+                        <div class="space-y-2 mb-4 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-white/70">Audience:</span>
+                                <span class="text-white">Chinese community (320K)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/70">Peak Period:</span>
+                                <span class="text-white">Jan 20 - Feb 10</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/70">Engagement:</span>
+                                <span class="text-green-400">+67% higher</span>
+                            </div>
+                        </div>
+                        
+                        <button onclick="createFestivalCampaign('chinese-new-year')" class="w-full bg-gradient-to-r from-red-500 to-yellow-500 text-white py-3 px-4 rounded-lg font-semibold">
+                            Use CNY Template
+                        </button>
+                    </div>
+
+                    <!-- Hari Raya Template -->
+                    <div class="bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-xl p-6 border border-green-300/30">
+                        <div class="text-center mb-4">
+                            <div class="text-4xl mb-2">🌙</div>
+                            <h4 class="text-xl font-bold text-white mb-2">Hari Raya Aidilfitri</h4>
+                            <p class="text-white/70 text-sm">Target Malay community with celebration messaging</p>
+                        </div>
+                        
+                        <div class="space-y-2 mb-4 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-white/70">Audience:</span>
+                                <span class="text-white">Malay community (450K)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/70">Peak Period:</span>
+                                <span class="text-white">Mar 25 - Apr 5</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-white/70">Engagement:</span>
+                                <span class="text-green-400">+78% higher</span>
+                            </div>
+                        </div>
+                        
+                        <button onclick="createFestivalCampaign('hari-raya')" class="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 px-4 rounded-lg font-semibold">
+                            Use Hari Raya Template
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Recommendations -->
+        <div class="glassmorphism rounded-2xl p-8 animate-slide-up" style="animation-delay: 0.4s">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
+                    <i data-lucide="brain" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white">AI Recommendations</h3>
+                    <p class="text-white/70">Based on current Malaysia market trends</p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white/10 rounded-xl p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <i data-lucide="trending-up" class="w-5 h-5 text-green-400"></i>
+                        <h4 class="font-semibold text-white">Peak Performance Window</h4>
+                    </div>
+                    <p class="text-white/70 text-sm mb-3">Campaigns perform 34% better between 7-9 PM Malaysia time. Consider scheduling your ads during these peak hours.</p>
+                    <div class="text-green-400 text-sm font-semibold">Recommended: Enable evening scheduling</div>
+                </div>
+                
+                <div class="bg-white/10 rounded-xl p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <i data-lucide="users" class="w-5 h-5 text-blue-400"></i>
+                        <h4 class="font-semibold text-white">Audience Opportunity</h4>
+                    </div>
+                    <p class="text-white/70 text-sm mb-3">Health supplement audiences show 67% higher conversion rates this month. Great time to target wellness-focused campaigns.</p>
+                    <div class="text-blue-400 text-sm font-semibold">Recommended: Health & Wellness targeting</div>
+                </div>
+                
+                <div class="bg-white/10 rounded-xl p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <i data-lucide="calendar" class="w-5 h-5 text-purple-400"></i>
+                        <h4 class="font-semibold text-white">Festival Opportunity</h4>
+                    </div>
+                    <p class="text-white/70 text-sm mb-3">Deepavali is tomorrow! Tamil community campaigns show 89% higher engagement during festival periods.</p>
+                    <div class="text-purple-400 text-sm font-semibold">Recommended: Create Deepavali campaign</div>
+                </div>
+                
+                <div class="bg-white/10 rounded-xl p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <i data-lucide="smartphone" class="w-5 h-5 text-orange-400"></i>
+                        <h4 class="font-semibold text-white">Device Targeting</h4>
+                    </div>
+                    <p class="text-white/70 text-sm mb-3">75% of Malaysia traffic comes from mobile devices. Ensure your campaigns are mobile-optimized for best results.</p>
+                    <div class="text-orange-400 text-sm font-semibold">Recommended: Mobile-first approach</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Show Quick Setup Options
+        function showQuickSetupOptions() {
+            document.getElementById('quickSetupOptions').classList.remove('hidden');
+            document.getElementById('malaysiaTemplates').classList.add('hidden');
+            
+            // Smooth scroll to the section
+            document.getElementById('quickSetupOptions').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+        
+        // Hide Quick Setup Options
+        function hideQuickSetupOptions() {
+            document.getElementById('quickSetupOptions').classList.add('hidden');
+        }
+        
+        // Show Malaysia Templates
+        function showMalaysiaTemplates() {
+            document.getElementById('malaysiaTemplates').classList.remove('hidden');
+            document.getElementById('quickSetupOptions').classList.add('hidden');
+            
+            // Smooth scroll to the section
+            document.getElementById('malaysiaTemplates').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+        
+        // Hide Malaysia Templates
+        function hideMalaysiaTemplates() {
+            document.getElementById('malaysiaTemplates').classList.add('hidden');
+        }
+        
+        // Create Quick Campaign
+        function createQuickCampaign(type) {
+            const campaigns = {
+                'smoking-cessation': {
+                    name: 'Smoking Cessation Malaysia Q4',
+                    audience: '280K Malaysian smokers',
+                    budget: 'RM 50-100/day',
+                    languages: 'Bahasa, English, Chinese'
+                },
+                'health-wellness': {
+                    name: 'Health & Wellness Malaysia',
+                    audience: '420K health enthusiasts',
+                    budget: 'RM 75-150/day',
+                    languages: 'Bahasa, English, Tamil'
+                },
+                'outdoor-workers': {
+                    name: 'Pekerja Luar Malaysia',
+                    audience: '150K outdoor workers',
+                    budget: 'RM 30-60/day',
+                    languages: 'Bahasa, English'
+                },
+                'professional-services': {
+                    name: 'Professional Services Malaysia',
+                    audience: '350K professionals',
+                    budget: 'RM 100-200/day',
+                    languages: 'English, Chinese, Bahasa'
+                }
+            };
+            
+            const campaign = campaigns[type];
+            
+            // Show loading state
+            event.target.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin inline mr-2"></i>Creating Campaign...';
+            
+            setTimeout(() => {
+                alert(`🎯 Campaign Created Successfully!\n\n` +
+                      `Campaign: ${campaign.name}\n` +
+                      `Target Audience: ${campaign.audience}\n` +
+                      `Suggested Budget: ${campaign.budget}\n` +
+                      `Languages: ${campaign.languages}\n\n` +
+                      `✅ Audience targeting configured\n` +
+                      `✅ Malaysia optimization enabled\n` +
+                      `✅ Peak hour scheduling set (7-9 PM)\n` +
+                      `✅ Mobile-first optimization applied\n\n` +
+                      `Your campaign is now live and optimized for Malaysia market!`);
+                
+                // Redirect to analytics after creation
+                setTimeout(() => {
+                    window.location.href = 'modern-analytics-dashboard.html';
+                }, 2000);
+            }, 2000);
+        }
+        
+        // Create Festival Campaign
+        function createFestivalCampaign(festival) {
+            const festivals = {
+                'deepavali': {
+                    name: 'Deepavali Health Campaign 2025',
+                    audience: 'Tamil community (180K)',
+                    period: 'Oct 28 - Nov 5',
+                    boost: '+89% engagement'
+                },
+                'chinese-new-year': {
+                    name: 'Chinese New Year Prosperity 2026',
+                    audience: 'Chinese community (320K)',
+                    period: 'Jan 20 - Feb 10',
+                    boost: '+67% engagement'
+                },
+                'hari-raya': {
+                    name: 'Hari Raya Celebration 2026',
+                    audience: 'Malay community (450K)',
+                    period: 'Mar 25 - Apr 5',
+                    boost: '+78% engagement'
+                }
+            };
+            
+            const campaign = festivals[festival];
+            
+            // Show loading state
+            event.target.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin inline mr-2"></i>Creating Festival Campaign...';
+            
+            setTimeout(() => {
+                alert(`🎉 Festival Campaign Created Successfully!\n\n` +
+                      `Campaign: ${campaign.name}\n` +
+                      `Target Audience: ${campaign.audience}\n` +
+                      `Campaign Period: ${campaign.period}\n` +
+                      `Expected Performance: ${campaign.boost}\n\n` +
+                      `✅ Festival-specific targeting enabled\n` +
+                      `✅ Cultural messaging optimized\n` +
+                      `✅ Peak festival period scheduling\n` +
+                      `✅ Community-specific creatives ready\n\n` +
+                      `Your festival campaign is ready to capture the celebration spirit!`);
+                
+                // Redirect to analytics after creation
+                setTimeout(() => {
+                    window.location.href = 'modern-analytics-dashboard.html';
+                }, 2000);
+            }, 2000);
+        }
+        
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to campaign cards
+            const campaignCards = document.querySelectorAll('.campaign-card');
+            campaignCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
