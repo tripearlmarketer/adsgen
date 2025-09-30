@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audience Targeting - DemandGen Pro</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            space-x: 3;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-left: 12px;
+        }
+        
+        .logo p {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-left: 12px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        
+        .main-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 16px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .step.completed {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        
+        .step.active {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+        
+        .step.upcoming {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .section-subtitle {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 32px;
+        }
+        
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .audience-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .audience-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .audience-card.selected {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .audience-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .audience-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .audience-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .audience-size {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .audience-description {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        
+        .audience-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.8;
+        }
+        
+        .custom-audience {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 200px;
+        }
+        
+        .custom-audience:hover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
+        .footer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+        
+        .progress-info {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .notification {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(20px);
+            animation: slideIn 0.3s ease;
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(21, 128, 61, 0.9));
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(185, 28, 28, 0.9));
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="notificationContainer" class="notification-container"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <i data-lucide="zap" class="w-8 h-8"></i>
+                <div>
+                    <h1>DemandGen Pro</h1>
+                    <p>Audience Targeting</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button onclick="saveDraft()" class="btn btn-secondary">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    Save Draft
+                </button>
+                <button onclick="exitBuilder()" class="btn btn-secondary">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                    Exit Builder
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step completed">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                    Campaign Setup
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 opacity-50"></i>
+                <div class="step active">
+                    <i data-lucide="users" class="w-4 h-4"></i>
+                    Audience Targeting
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 opacity-50"></i>
+                <div class="step upcoming">
+                    <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+                    Budget & Bidding
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 opacity-50"></i>
+                <div class="step upcoming">
+                    <i data-lucide="image" class="w-4 h-4"></i>
+                    Creative Assets
+                </div>
+            </div>
+
+            <h2 class="section-title">Choose Your Target Audience</h2>
+            <p class="section-subtitle">Select pre-built audiences optimized for Malaysia market or create your own custom audience</p>
+
+            <!-- Audience Options -->
+            <div class="audience-grid">
+                <!-- Smoking Cessation Audience -->
+                <div class="audience-card" onclick="selectAudience('smoking-cessation')">
+                    <div class="audience-header">
+                        <div class="audience-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                            🚬
+                        </div>
+                        <div>
+                            <div class="audience-title">Smoking Cessation Malaysia</div>
+                            <div class="audience-size">280K potential reach</div>
+                        </div>
+                    </div>
+                    <div class="audience-description">
+                        Adults aged 25-55 interested in quitting smoking, health improvement, and wellness products. Optimized for Malaysia market with cultural considerations.
+                    </div>
+                    <div class="audience-stats">
+                        <div class="stat">
+                            <i data-lucide="target" class="w-3 h-3"></i>
+                            4.2% CTR
+                        </div>
+                        <div class="stat">
+                            <i data-lucide="trending-up" class="w-3 h-3"></i>
+                            +67% engagement
+                        </div>
+                        <div class="stat">
+                            <i data-lucide="dollar-sign" class="w-3 h-3"></i>
+                            RM 2.50 CPC
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health & Wellness Audience -->
+                <div class="audience-card" onclick="selectAudience('health-wellness')">
+                    <div class="audience-header">
+                        <div class="audience-icon" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+                            🌿
+                        </div>
+                        <div>
+                            <div class="audience-title">Health & Wellness Malaysia</div>
+                            <div class="audience-size">420K potential reach</div>
+                        </div>
+                    </div>
+                    <div class="audience-description">
+                        Health-conscious individuals interested in fitness, nutrition, supplements, and wellness services. Includes gym members and health enthusiasts.
+                    </div>
+                    <div class="audience-stats">
+                        <div class="stat">
+                            <i data-lucide="target" class="w-3 h-3"></i>
+                            3.8% CTR
+                        </div>
+                        <div class="stat">
+                            <i data-lucide="trending-up" class="w-3 h-3"></i>
+                            +54% engagement
+                        </div>
+                        <div class="stat">
+                            <i data-lucide="dollar-sign" class="w-3 h-3"></i>
+                            RM 3.20 CPC
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professional Services Audience -->
+                <div class="audience-card" onclick="selectAudience('professional-services')">
+                    <div class="audience-header">
+                        <div class="audience-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                            🏢
+                        </div>
+                        <div>
+                            <div class="audience-title">Professional Services</div>
+                            <div class="audience-size">350K potential reach</div>
+                        </div>
+                    </div>
+                    <div class="audience-description">
+                        Business professionals, executives, and decision-makers interested in B2B services, consulting, and professional development.
+                    </div>
+                    <div class="audience-stats">
+                        <div class="stat">
+                            <i data-lucide="target" class="w-3 h-3"></i>
+                            5.1% CTR
+                        </div>
+                        <div class="stat">
+                            <i data-lucide="trending-up" class="w-3 h-3"></i>
+                            +78% engagement
+                        </div>
+                        <div class="stat">
+                            <i data-lucide="dollar-sign" class="w-3 h-3"></i>
+                            RM 4.80 CPC
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pekerja Luar Audience -->
+                <div class="audience-card" onclick="selectAudience('pekerja-luar')">
+                    <div class="audience-header">
+                        <div class="audience-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                            🚛
+                        </div>
+                        <div>
+                            <div class="audience-title">Pekerja Luar Malaysia</div>
+                            <div class="audience-size">150K potential reach</div>
+                        </div>
+                    </div>
+                    <div class="audience-description">
+                        Blue-collar workers, construction workers, delivery drivers, and outdoor workers. Targeted with Bahasa Malaysia content and mobile-first approach.
+                    </div>
+                    <div class="audience-stats">
+                        <div class="stat">
+                            <i data-lucide="target" class="w-3 h-3"></i>
+                            2.9% CTR
+                        </div>
+                        <div class="stat">
+                            <i data-lucide="trending-up" class="w-3 h-3"></i>
+                            +43% engagement
+                        </div>
+                        <div class="stat">
+                            <i data-lucide="dollar-sign" class="w-3 h-3"></i>
+                            RM 1.80 CPC
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Festival Audience -->
+                <div class="audience-card" onclick="selectAudience('festival-deepavali')">
+                    <div class="audience-header">
+                        <div class="audience-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                            🪔
+                        </div>
+                        <div>
+                            <div class="audience-title">Deepavali Celebration</div>
+                            <div class="audience-size">180K potential reach</div>
+                        </div>
+                    </div>
+                    <div class="audience-description">
+                        Tamil community and Deepavali celebrants interested in festival shopping, traditional items, and celebration services. Active tomorrow!
+                    </div>
+                    <div class="audience-stats">
+                        <div class="stat">
+                            <i data-lucide="target" class="w-3 h-3"></i>
+                            6.8% CTR
+                        </div>
+                        <div class="stat">
+                            <i data-lucide="trending-up" class="w-3 h-3"></i>
+                            +89% engagement
+                        </div>
+                        <div class="stat">
+                            <i data-lucide="dollar-sign" class="w-3 h-3"></i>
+                            RM 3.60 CPC
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Audience -->
+                <div class="audience-card custom-audience" onclick="createCustomAudience()">
+                    <i data-lucide="plus-circle" class="w-12 h-12 mb-4 opacity-60"></i>
+                    <div class="audience-title">Create Custom Audience</div>
+                    <div class="audience-description">Build your own audience with specific demographics, interests, and behaviors</div>
+                </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="footer-actions">
+                <button onclick="goBack()" class="btn btn-secondary">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Back to Campaign Setup
+                </button>
+                <div class="progress-info">
+                    Step 2 of 4 - Audience Targeting
+                </div>
+                <button onclick="continueToBudget()" id="continueBtn" class="btn btn-primary">
+                    Continue to Budget
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        let selectedAudience = null;
+        
+        function selectAudience(audienceId) {
+            // Remove previous selection
+            document.querySelectorAll('.audience-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selection to clicked card
+            event.currentTarget.classList.add('selected');
+            selectedAudience = audienceId;
+            
+            // Show success notification
+            const audienceNames = {
+                'smoking-cessation': 'Smoking Cessation Malaysia',
+                'health-wellness': 'Health & Wellness Malaysia',
+                'professional-services': 'Professional Services',
+                'pekerja-luar': 'Pekerja Luar Malaysia',
+                'festival-deepavali': 'Deepavali Celebration'
+            };
+            
+            showNotification(`Selected: ${audienceNames[audienceId]}`, 'success');
+        }
+        
+        function createCustomAudience() {
+            showNotification('Custom audience builder coming soon!', 'info');
+        }
+        
+        function continueToBudget() {
+            if (!selectedAudience) {
+                showNotification('Please select an audience to continue', 'error');
+                return;
+            }
+            
+            // Save progress
+            saveDraft();
+            
+            // Show success message
+            showNotification('Audience targeting completed! Moving to budget setup...', 'success');
+            
+            // Redirect to budget page (or next step)
+            setTimeout(() => {
+                window.location.href = 'budget-bidding.html';
+            }, 2000);
+        }
+        
+        function goBack() {
+            window.location.href = 'modern-campaign-builder.html';
+        }
+        
+        function saveDraft() {
+            const draftData = {
+                selectedAudience: selectedAudience,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('audienceTargetingDraft', JSON.stringify(draftData));
+            showNotification('Draft saved successfully', 'success');
+        }
+        
+        function exitBuilder() {
+            if (confirm('Are you sure you want to exit? Your progress will be saved as draft.')) {
+                saveDraft();
+                window.location.href = 'modern-user-dashboard.html';
+            }
+        }
+        
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <i data-lucide="${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'info'}" class="w-5 h-5"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            container.appendChild(notification);
+            lucide.createIcons();
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Load saved draft on page load
+        window.addEventListener('load', function() {
+            const savedDraft = localStorage.getItem('audienceTargetingDraft');
+            if (savedDraft) {
+                const draftData = JSON.parse(savedDraft);
+                if (draftData.selectedAudience) {
+                    // Auto-select saved audience
+                    const audienceCard = document.querySelector(`[onclick="selectAudience('${draftData.selectedAudience}')"]`);
+                    if (audienceCard) {
+                        audienceCard.classList.add('selected');
+                        selectedAudience = draftData.selectedAudience;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
