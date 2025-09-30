@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Campaign Builder - DemandGen Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        accent: '#f59e0b',
+                        malaysia: {
+                            red: '#cc0001',
+                            gold: '#ffd700'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .malaysia-gradient {
+            background: linear-gradient(135deg, #cc0001 0%, #ffd700 100%);
+        }
+        .btn-malaysia {
+            background: linear-gradient(to right, #dc2626, #f59e0b);
+        }
+        .btn-malaysia:hover {
+            background: linear-gradient(to right, #b91c1c, #d97706);
+        }
+        .step-active {
+            background: linear-gradient(to right, #dc2626, #f59e0b);
+            color: white;
+        }
+        .step-completed {
+            background: #10b981;
+            color: white;
+        }
+        .step-inactive {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 malaysia-gradient rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">DemandGen Pro</h1>
+                        <p class="text-xs text-gray-500">Advanced Campaign Builder</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 px-3 py-1 rounded-full bg-green-100 text-green-800">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span class="text-sm">API Online</span>
+                    </div>
+                    
+                    <button onclick="window.location.href='index.html'" class="text-gray-600 hover:text-gray-900">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Steps -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div id="step-1" class="step-active px-4 py-2 rounded-lg text-sm font-medium">
+                        1. Campaign Setup
+                    </div>
+                    <div class="w-8 h-px bg-gray-300"></div>
+                    <div id="step-2" class="step-inactive px-4 py-2 rounded-lg text-sm font-medium">
+                        2. Audience & Targeting
+                    </div>
+                    <div class="w-8 h-px bg-gray-300"></div>
+                    <div id="step-3" class="step-inactive px-4 py-2 rounded-lg text-sm font-medium">
+                        3. Budget & Bidding
+                    </div>
+                    <div class="w-8 h-px bg-gray-300"></div>
+                    <div id="step-4" class="step-inactive px-4 py-2 rounded-lg text-sm font-medium">
+                        4. Assets & Creative
+                    </div>
+                    <div class="w-8 h-px bg-gray-300"></div>
+                    <div id="step-5" class="step-inactive px-4 py-2 rounded-lg text-sm font-medium">
+                        5. Review & Launch
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-12 gap-8">
+            <!-- Main Form -->
+            <div class="col-span-8">
+                <!-- Step 1: Campaign Setup -->
+                <div id="step-1-content" class="bg-white rounded-lg shadow-sm border p-6">
+                    <h2 class="text-2xl font-bold mb-6">Campaign Setup</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Campaign Name -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Campaign Name *</label>
+                            <input type="text" id="campaign-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., Perokok & Vape Malaysia Q4 2025">
+                            <p class="text-xs text-gray-500 mt-1">Choose a descriptive name for your campaign</p>
+                        </div>
+
+                        <!-- Campaign Objective -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Campaign Objective *</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="objective" value="sales" class="mt-1 mr-3">
+                                    <div>
+                                        <div class="font-medium">💰 Sales</div>
+                                        <div class="text-sm text-gray-500">Drive online sales and conversions</div>
+                                        <div class="text-xs text-blue-600 mt-1">Best for: E-commerce, Online stores</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="objective" value="leads" class="mt-1 mr-3">
+                                    <div>
+                                        <div class="font-medium">📋 Leads</div>
+                                        <div class="text-sm text-gray-500">Generate leads and sign-ups</div>
+                                        <div class="text-xs text-blue-600 mt-1">Best for: B2B, Services, Subscriptions</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="objective" value="traffic" class="mt-1 mr-3">
+                                    <div>
+                                        <div class="font-medium">🌐 Website Traffic</div>
+                                        <div class="text-sm text-gray-500">Drive traffic to your website</div>
+                                        <div class="text-xs text-blue-600 mt-1">Best for: Content, Blogs, News</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="objective" value="awareness" class="mt-1 mr-3">
+                                    <div>
+                                        <div class="font-medium">📢 Brand Awareness</div>
+                                        <div class="text-sm text-gray-500">Increase brand visibility</div>
+                                        <div class="text-xs text-blue-600 mt-1">Best for: New brands, Product launches</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Campaign Type -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Campaign Type</label>
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-blue-900">Demand Gen Campaign</div>
+                                        <div class="text-sm text-blue-700">Optimized for Malaysia market with local audience insights</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Website URL -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Website URL *</label>
+                            <input type="url" id="website-url" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://www.example.com">
+                            <p class="text-xs text-gray-500 mt-1">The main website you want to promote</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-8">
+                        <button onclick="nextStep(2)" class="btn-malaysia px-6 py-2 text-white rounded-lg hover:shadow-lg">
+                            Next: Audience & Targeting
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Audience & Targeting (Hidden) -->
+                <div id="step-2-content" class="bg-white rounded-lg shadow-sm border p-6 hidden">
+                    <h2 class="text-2xl font-bold mb-6">Audience & Targeting</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Malaysia Audience Packs -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Malaysia Audience Packs *</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="audience-pack" value="perokok-vape" class="mt-1 mr-3">
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <span class="text-2xl">🚬</span>
+                                            <div class="font-medium">Perokok & Vape</div>
+                                        </div>
+                                        <div class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mb-2 inline-block">2.1M+ reach</div>
+                                        <div class="text-sm text-gray-600">Target smokers dan vape users di Malaysia</div>
+                                        <div class="text-xs text-gray-500 mt-2">
+                                            <strong>Demographics:</strong> Age 18-45, Urban areas<br>
+                                            <strong>Interests:</strong> Smoking cessation, Vaping products, Health alternatives
+                                        </div>
+                                    </div>
+                                </label>
+                                
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="audience-pack" value="kesihatan" class="mt-1 mr-3">
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <span class="text-2xl">💪</span>
+                                            <div class="font-medium">Imun & Gaya Hidup Sihat</div>
+                                        </div>
+                                        <div class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mb-2 inline-block">1.8M+ reach</div>
+                                        <div class="text-sm text-gray-600">Health-conscious consumers dan wellness enthusiasts</div>
+                                        <div class="text-xs text-gray-500 mt-2">
+                                            <strong>Demographics:</strong> Age 25-55, Middle-upper income<br>
+                                            <strong>Interests:</strong> Fitness, Nutrition, Supplements, Wellness
+                                        </div>
+                                    </div>
+                                </label>
+                                
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="audience-pack" value="pekerja-luar" class="mt-1 mr-3">
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <span class="text-2xl">🚛</span>
+                                            <div class="font-medium">Pekerja Luar & Pemandu</div>
+                                        </div>
+                                        <div class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mb-2 inline-block">1.5M+ reach</div>
+                                        <div class="text-sm text-gray-600">Outdoor workers, drivers, dan blue-collar workers</div>
+                                        <div class="text-xs text-gray-500 mt-2">
+                                            <strong>Demographics:</strong> Age 20-50, Working class<br>
+                                            <strong>Interests:</strong> Automotive, Tools, Energy drinks, Mobile services
+                                        </div>
+                                    </div>
+                                </label>
+                                
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="audience-pack" value="pasca-sakit" class="mt-1 mr-3">
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-2 mb-2">
+                                            <span class="text-2xl">🏥</span>
+                                            <div class="font-medium">Pasca-Sakit Recovery</div>
+                                        </div>
+                                        <div class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mb-2 inline-block">900K+ reach</div>
+                                        <div class="text-sm text-gray-600">Post-illness recovery dan rehabilitation market</div>
+                                        <div class="text-xs text-gray-500 mt-2">
+                                            <strong>Demographics:</strong> Age 30-65, Health-focused<br>
+                                            <strong>Interests:</strong> Recovery products, Medical devices, Health monitoring
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Location Targeting -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Location Targeting</label>
+                            <div class="space-y-3">
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="location" value="all-malaysia" checked class="mr-3">
+                                    <div>
+                                        <div class="font-medium">🇲🇾 Malaysia (All States)</div>
+                                        <div class="text-sm text-gray-500">Target all 13 states + 3 federal territories</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="location" value="klang-valley" class="mr-3">
+                                    <div>
+                                        <div class="font-medium">🏙️ Klang Valley Only</div>
+                                        <div class="text-sm text-gray-500">Kuala Lumpur, Selangor, Putrajaya</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="location" value="major-cities" class="mr-3">
+                                    <div>
+                                        <div class="font-medium">🌆 Major Cities</div>
+                                        <div class="text-sm text-gray-500">KL, Penang, Johor Bahru, Ipoh, Kuching, Kota Kinabalu</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Age & Gender -->
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Age Range</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2"> 18-24 years
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" checked class="mr-2"> 25-34 years
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" checked class="mr-2"> 35-44 years
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2"> 45-54 years
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2"> 55-64 years
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2"> 65+ years
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Gender</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" checked class="mr-2"> All genders
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2"> Male
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2"> Female
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Languages -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Languages</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked class="mr-2"> Bahasa Malaysia
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked class="mr-2"> English
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2"> Chinese (Simplified)
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2"> Chinese (Traditional)
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2"> Tamil
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button onclick="prevStep(1)" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                            Previous
+                        </button>
+                        <button onclick="nextStep(3)" class="btn-malaysia px-6 py-2 text-white rounded-lg hover:shadow-lg">
+                            Next: Budget & Bidding
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Budget & Bidding (Hidden) -->
+                <div id="step-3-content" class="bg-white rounded-lg shadow-sm border p-6 hidden">
+                    <h2 class="text-2xl font-bold mb-6">Budget & Bidding</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Budget Type -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Budget Type</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="budget-type" value="daily" checked class="mt-1 mr-3">
+                                    <div>
+                                        <div class="font-medium">Daily Budget</div>
+                                        <div class="text-sm text-gray-500">Set amount to spend per day</div>
+                                        <div class="text-xs text-blue-600 mt-1">Recommended for ongoing campaigns</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="budget-type" value="total" class="mt-1 mr-3">
+                                    <div>
+                                        <div class="font-medium">Total Budget</div>
+                                        <div class="text-sm text-gray-500">Set total amount for campaign duration</div>
+                                        <div class="text-xs text-blue-600 mt-1">Good for limited-time campaigns</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Budget Amount -->
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Daily Budget (MYR) *</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2 text-gray-500">RM</span>
+                                    <input type="number" id="daily-budget" class="w-full pl-12 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="100" min="10">
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">Minimum: RM 10/day</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Monthly Estimate</label>
+                                <div class="bg-gray-50 px-3 py-2 rounded-lg border">
+                                    <span class="text-gray-600" id="monthly-estimate">RM 0 - RM 0</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">Based on daily budget</p>
+                            </div>
+                        </div>
+
+                        <!-- Bidding Strategy -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Bidding Strategy</label>
+                            <div class="space-y-3">
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bidding" value="maximize-conversions" checked class="mt-1 mr-3">
+                                    <div>
+                                        <div class="font-medium">🎯 Maximize Conversions</div>
+                                        <div class="text-sm text-gray-500">Get the most conversions within your budget</div>
+                                        <div class="text-xs text-blue-600 mt-1">Recommended for most campaigns</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bidding" value="target-cpa" class="mt-1 mr-3">
+                                    <div>
+                                        <div class="font-medium">💰 Target CPA</div>
+                                        <div class="text-sm text-gray-500">Set target cost per acquisition</div>
+                                        <div class="text-xs text-blue-600 mt-1">Good when you know your target CPA</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="bidding" value="target-roas" class="mt-1 mr-3">
+                                    <div>
+                                        <div class="font-medium">📈 Target ROAS</div>
+                                        <div class="text-sm text-gray-500">Set target return on ad spend</div>
+                                        <div class="text-xs text-blue-600 mt-1">Best for e-commerce with conversion values</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Campaign Schedule -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Campaign Schedule</label>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Start Date *</label>
+                                    <input type="date" id="start-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">End Date (Optional)</label>
+                                    <input type="date" id="end-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ad Schedule -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Ad Schedule (Malaysia Time)</label>
+                            <div class="space-y-3">
+                                <label class="flex items-center">
+                                    <input type="radio" name="schedule" value="all-time" checked class="mr-3">
+                                    <span>Run ads all the time</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="schedule" value="business-hours" class="mr-3">
+                                    <span>Business hours only (9 AM - 6 PM, Mon-Fri)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="schedule" value="custom" class="mr-3">
+                                    <span>Custom schedule</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button onclick="prevStep(2)" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                            Previous
+                        </button>
+                        <button onclick="nextStep(4)" class="btn-malaysia px-6 py-2 text-white rounded-lg hover:shadow-lg">
+                            Next: Assets & Creative
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Assets & Creative (Hidden) -->
+                <div id="step-4-content" class="bg-white rounded-lg shadow-sm border p-6 hidden">
+                    <h2 class="text-2xl font-bold mb-6">Assets & Creative</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Headlines -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Headlines (3-15 required) *</label>
+                            <div class="space-y-3">
+                                <div class="relative">
+                                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Headline 1 (max 30 characters)" maxlength="30">
+                                    <span class="absolute right-3 top-2 text-xs text-gray-400">0/30</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Headline 2 (max 30 characters)" maxlength="30">
+                                    <span class="absolute right-3 top-2 text-xs text-gray-400">0/30</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Headline 3 (max 30 characters)" maxlength="30">
+                                    <span class="absolute right-3 top-2 text-xs text-gray-400">0/30</span>
+                                </div>
+                                <button class="text-blue-600 text-sm hover:underline">+ Add more headlines</button>
+                            </div>
+                        </div>
+
+                        <!-- Descriptions -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Descriptions (2-4 required) *</label>
+                            <div class="space-y-3">
+                                <div class="relative">
+                                    <textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" rows="2" placeholder="Description 1 (max 90 characters)" maxlength="90"></textarea>
+                                    <span class="absolute right-3 bottom-2 text-xs text-gray-400">0/90</span>
+                                </div>
+                                <div class="relative">
+                                    <textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" rows="2" placeholder="Description 2 (max 90 characters)" maxlength="90"></textarea>
+                                    <span class="absolute right-3 bottom-2 text-xs text-gray-400">0/90</span>
+                                </div>
+                                <button class="text-blue-600 text-sm hover:underline">+ Add more descriptions</button>
+                            </div>
+                        </div>
+
+                        <!-- Images -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Images (1-20 required) *</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <div class="mt-4">
+                                    <button class="btn-malaysia px-4 py-2 text-white rounded-lg">Upload Images</button>
+                                    <p class="mt-2 text-sm text-gray-500">
+                                        PNG, JPG up to 5MB each<br>
+                                        Recommended: 1200x628px (landscape), 1200x1200px (square)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Videos (Optional) -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Videos (Optional)</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                                <div class="mt-4">
+                                    <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">Upload Videos</button>
+                                    <p class="mt-2 text-sm text-gray-500">
+                                        MP4, MOV up to 1GB each<br>
+                                        Recommended: 16:9 aspect ratio, min 720p
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Final URL -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Final URL *</label>
+                            <input type="url" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://www.example.com/landing-page">
+                            <p class="text-xs text-gray-500 mt-1">Where users will land when they click your ad</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button onclick="prevStep(3)" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                            Previous
+                        </button>
+                        <button onclick="nextStep(5)" class="btn-malaysia px-6 py-2 text-white rounded-lg hover:shadow-lg">
+                            Next: Review & Launch
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Review & Launch (Hidden) -->
+                <div id="step-5-content" class="bg-white rounded-lg shadow-sm border p-6 hidden">
+                    <h2 class="text-2xl font-bold mb-6">Review & Launch</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- Campaign Summary -->
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="text-lg font-semibold mb-4">Campaign Summary</h3>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <div class="text-sm text-gray-600">Campaign Name</div>
+                                    <div class="font-medium" id="summary-name">-</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-600">Objective</div>
+                                    <div class="font-medium" id="summary-objective">-</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-600">Audience Pack</div>
+                                    <div class="font-medium" id="summary-audience">-</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-600">Daily Budget</div>
+                                    <div class="font-medium" id="summary-budget">-</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-600">Location</div>
+                                    <div class="font-medium" id="summary-location">-</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-600">Start Date</div>
+                                    <div class="font-medium" id="summary-start-date">-</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pre-launch Checklist -->
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4">Pre-launch Checklist</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="text-sm">Campaign setup completed</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="text-sm">Audience targeting configured</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="text-sm">Budget and bidding set</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white text-xs">!</span>
+                                    </div>
+                                    <span class="text-sm">Creative assets pending upload</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Launch Options -->
+                        <div>
+                            <h3 class="text-lg font-semibold mb-4">Launch Options</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="launch-option" value="immediate" checked class="mr-3">
+                                    <div>
+                                        <div class="font-medium">🚀 Launch Immediately</div>
+                                        <div class="text-sm text-gray-500">Campaign will start running as soon as it's approved</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="launch-option" value="scheduled" class="mr-3">
+                                    <div>
+                                        <div class="font-medium">📅 Schedule Launch</div>
+                                        <div class="text-sm text-gray-500">Campaign will start on the specified start date</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="launch-option" value="draft" class="mr-3">
+                                    <div>
+                                        <div class="font-medium">📝 Save as Draft</div>
+                                        <div class="text-sm text-gray-500">Save campaign for later review and launch</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button onclick="prevStep(4)" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                            Previous
+                        </button>
+                        <button onclick="launchCampaign()" class="btn-malaysia px-8 py-3 text-white rounded-lg hover:shadow-lg text-lg font-semibold">
+                            🚀 Launch Campaign
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-span-4">
+                <!-- Progress Summary -->
+                <div class="bg-white rounded-lg shadow-sm border p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Progress</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">Campaign Setup</span>
+                            <span class="text-green-600 text-sm">✓</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-400">Audience & Targeting</span>
+                            <span class="text-gray-400 text-sm">○</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-400">Budget & Bidding</span>
+                            <span class="text-gray-400 text-sm">○</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-400">Assets & Creative</span>
+                            <span class="text-gray-400 text-sm">○</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-400">Review & Launch</span>
+                            <span class="text-gray-400 text-sm">○</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-blue-900 mb-3">💡 Malaysia Tips</h3>
+                    <div class="space-y-3 text-sm text-blue-800">
+                        <div>• Use both Bahasa Malaysia and English in your ads for wider reach</div>
+                        <div>• Peak hours: 8-10 PM for consumer products</div>
+                        <div>• Consider Ramadan, Chinese New Year, and Deepavali seasons</div>
+                        <div>• Mobile-first approach - 80%+ traffic is mobile</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep(step) {
+            // Hide current step
+            document.getElementById(`step-${currentStep}-content`).classList.add('hidden');
+            document.getElementById(`step-${currentStep}`).className = 'step-completed px-4 py-2 rounded-lg text-sm font-medium';
+            
+            // Show next step
+            currentStep = step;
+            document.getElementById(`step-${currentStep}-content`).classList.remove('hidden');
+            document.getElementById(`step-${currentStep}`).className = 'step-active px-4 py-2 rounded-lg text-sm font-medium';
+            
+            // Update progress in sidebar
+            updateProgress();
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function prevStep(step) {
+            // Hide current step
+            document.getElementById(`step-${currentStep}-content`).classList.add('hidden');
+            document.getElementById(`step-${currentStep}`).className = 'step-inactive px-4 py-2 rounded-lg text-sm font-medium';
+            
+            // Show previous step
+            currentStep = step;
+            document.getElementById(`step-${currentStep}-content`).classList.remove('hidden');
+            document.getElementById(`step-${currentStep}`).className = 'step-active px-4 py-2 rounded-lg text-sm font-medium';
+            
+            // Update progress in sidebar
+            updateProgress();
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function updateProgress() {
+            // This would update the sidebar progress indicators
+            console.log(`Current step: ${currentStep}`);
+        }
+
+        function launchCampaign() {
+            // Collect all form data
+            const campaignData = {
+                name: document.getElementById('campaign-name').value,
+                objective: document.querySelector('input[name="objective"]:checked')?.value,
+                audiencePack: document.querySelector('input[name="audience-pack"]:checked')?.value,
+                location: document.querySelector('input[name="location"]:checked')?.value,
+                dailyBudget: document.getElementById('daily-budget').value,
+                startDate: document.getElementById('start-date').value,
+                endDate: document.getElementById('end-date').value,
+                launchOption: document.querySelector('input[name="launch-option"]:checked')?.value
+            };
+
+            // Show success message
+            alert(`🎉 Campaign "${campaignData.name}" berjaya dicipta!\n\nDetails:\n• Objective: ${campaignData.objective}\n• Audience: ${getAudiencePackName(campaignData.audiencePack)}\n• Budget: RM ${campaignData.dailyBudget}/hari\n• Location: ${getLocationName(campaignData.location)}\n\nCampaign akan mula berjalan selepas diluluskan oleh Google Ads.`);
+            
+            // Redirect to dashboard
+            setTimeout(() => {
+                window.location.href = 'index.html#dashboard';
+            }, 2000);
+        }
+
+        function getAudiencePackName(value) {
+            const names = {
+                'perokok-vape': 'Perokok & Vape',
+                'kesihatan': 'Imun & Gaya Hidup Sihat',
+                'pekerja-luar': 'Pekerja Luar & Pemandu',
+                'pasca-sakit': 'Pasca-Sakit Recovery'
+            };
+            return names[value] || value;
+        }
+
+        function getLocationName(value) {
+            const names = {
+                'all-malaysia': 'Malaysia (All States)',
+                'klang-valley': 'Klang Valley Only',
+                'major-cities': 'Major Cities'
+            };
+            return names[value] || value;
+        }
+
+        // Update monthly estimate when daily budget changes
+        document.getElementById('daily-budget').addEventListener('input', function() {
+            const daily = parseFloat(this.value) || 0;
+            const monthlyMin = Math.round(daily * 30.4 * 0.8); // 80% of max
+            const monthlyMax = Math.round(daily * 30.4 * 1.2); // 120% of max
+            document.getElementById('monthly-estimate').textContent = `RM ${monthlyMin} - RM ${monthlyMax}`;
+        });
+
+        // Set default start date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start-date').value = today;
+        });
+
+        // Character counters for text inputs
+        document.addEventListener('input', function(e) {
+            if (e.target.hasAttribute('maxlength')) {
+                const maxLength = e.target.getAttribute('maxlength');
+                const currentLength = e.target.value.length;
+                const counter = e.target.parentNode.querySelector('.text-xs');
+                if (counter) {
+                    counter.textContent = `${currentLength}/${maxLength}`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

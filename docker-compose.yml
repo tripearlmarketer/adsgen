@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  demandgen-pro:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - JWT_SECRET=your-super-secret-jwt-key-change-this
+      - DATABASE_URL=./database/demandgen.sqlite
+    volumes:
+      - ./database:/app/database
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add PostgreSQL for production
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=demandgen_pro
+      - POSTGRES_USER=demandgen
+      - POSTGRES_PASSWORD=secure_password_change_this
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  # Optional: Add Redis for caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:

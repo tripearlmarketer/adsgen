@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Builder - Audience & Targeting - DemandGen Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        accent: '#f59e0b',
+                        malaysia: {
+                            red: '#cc0001',
+                            gold: '#ffd700'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .malaysia-gradient {
+            background: linear-gradient(135deg, #cc0001 0%, #ffd700 100%);
+        }
+        .btn-malaysia {
+            background: linear-gradient(to right, #dc2626, #f59e0b);
+        }
+        .btn-malaysia:hover {
+            background: linear-gradient(to right, #b91c1c, #d97706);
+        }
+        .step-indicator {
+            position: relative;
+        }
+        .step-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -20px;
+            width: 40px;
+            height: 2px;
+            background: #e5e7eb;
+            transform: translateY(-50%);
+        }
+        .step-indicator.active::after {
+            background: #3b82f6;
+        }
+        .step-indicator:last-child::after {
+            display: none;
+        }
+        .audience-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .audience-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .audience-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        .audience-item {
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+        .audience-item:hover {
+            background: #f3f4f6;
+            border-color: #3b82f6;
+        }
+        .audience-item.selected {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .reach-estimate {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .section-header {
+            background: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 16px;
+            margin: 16px 0 8px 0;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 malaysia-gradient rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">DemandGen Pro</h1>
+                        <p class="text-xs text-gray-500">Campaign Builder - Step 2 of 5</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="saveDraft()" class="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Save Draft
+                    </button>
+                    <button onclick="window.location.href='index.html'" class="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Exit Builder
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Steps -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <div class="step-indicator flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-medium">✓</div>
+                        <span class="text-sm font-medium text-green-600">Campaign Setup</span>
+                    </div>
+                    <div class="step-indicator active flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                        <span class="text-sm font-medium text-blue-600">Audience & Targeting</span>
+                    </div>
+                    <div class="step-indicator flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                        <span class="text-sm font-medium text-gray-500">Budget & Bidding</span>
+                    </div>
+                    <div class="step-indicator flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                        <span class="text-sm font-medium text-gray-500">Assets & Creative</span>
+                    </div>
+                    <div class="step-indicator flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">5</div>
+                        <span class="text-sm font-medium text-gray-500">Review & Launch</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column - Targeting Options -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white rounded-lg shadow border p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">🎯 Audience & Targeting</h2>
+                    
+                    <!-- 1. DEMOGRAPHICS -->
+                    <div class="section-header">
+                        <h3 class="text-lg font-medium text-gray-900">👥 Demographics</h3>
+                        <p class="text-sm text-gray-600">Target people based on age, gender, and family status</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Age Range</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                    <span class="ml-2 text-sm">18-24 years</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                    <span class="ml-2 text-sm">25-34 years</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                    <span class="ml-2 text-sm">35-44 years</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">45-54 years</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">55-64 years</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">65+ years</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Gender</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="gender" class="text-blue-600 focus:ring-blue-500" checked>
+                                    <span class="ml-2 text-sm">All genders</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="gender" class="text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Male</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="gender" class="text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Female</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="gender" class="text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Unknown</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Parental Status</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Parents</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Not parents</span>
+                                </label>
+                            </div>
+                            
+                            <label class="block text-sm font-medium text-gray-700 mb-3 mt-4">Household Income</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">
+                                <option>All household incomes</option>
+                                <option>Top 10%</option>
+                                <option>11-20%</option>
+                                <option>21-30%</option>
+                                <option>31-40%</option>
+                                <option>41-50%</option>
+                                <option>Lower 50%</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 2. GEOGRAPHIC TARGETING -->
+                    <div class="section-header">
+                        <h3 class="text-lg font-medium text-gray-900">🌍 Geographic Targeting</h3>
+                        <p class="text-sm text-gray-600">Choose locations where you want your ads to show</p>
+                    </div>
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Location Options</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option>People in or regularly in your targeted locations</option>
+                                <option>People in your targeted locations</option>
+                                <option>People regularly in your targeted locations</option>
+                                <option>People who have shown interest in your targeted locations</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Target Locations</label>
+                            <div class="relative">
+                                <input type="text" placeholder="Enter locations (countries, states, cities, postal codes)" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <button class="absolute right-2 top-2 text-blue-600 hover:text-blue-800">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <!-- Selected Locations -->
+                            <div class="mt-3 space-y-2">
+                                <div class="flex items-center justify-between bg-blue-50 px-3 py-2 rounded-lg">
+                                    <span class="text-sm">🇲🇾 Malaysia</span>
+                                    <button class="text-red-500 hover:text-red-700">✕</button>
+                                </div>
+                                <div class="flex items-center justify-between bg-blue-50 px-3 py-2 rounded-lg">
+                                    <span class="text-sm">🏙️ Kuala Lumpur, Malaysia</span>
+                                    <button class="text-red-500 hover:text-red-700">✕</button>
+                                </div>
+                                <div class="flex items-center justify-between bg-blue-50 px-3 py-2 rounded-lg">
+                                    <span class="text-sm">🏙️ Selangor, Malaysia</span>
+                                    <button class="text-red-500 hover:text-red-700">✕</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Languages</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                    <span class="ml-2 text-sm">Bahasa Malaysia</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                    <span class="ml-2 text-sm">English</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Chinese (Simplified)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Chinese (Traditional)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Tamil</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Hindi</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. AUDIENCE SEGMENTS -->
+                    <div class="section-header">
+                        <h3 class="text-lg font-medium text-gray-900">👤 Audience Segments</h3>
+                        <p class="text-sm text-gray-600">Reach people based on their interests and behaviors</p>
+                    </div>
+
+                    <!-- Affinity Audiences -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-800 mb-3 flex items-center">
+                            <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+                            Affinity Audiences (Broad Interests)
+                        </h4>
+                        <p class="text-sm text-gray-600 mb-3">People with strong, long-term interests in these topics</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="audience-item">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">💪 Health & Fitness Enthusiasts</div>
+                                        <div class="text-xs text-gray-500">People passionate about fitness and wellness</div>
+                                    </div>
+                                    <div class="text-xs text-gray-500">3.2M</div>
+                                </div>
+                            </div>
+                            
+                            <div class="audience-item selected">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">🚬 Tobacco & Smoking</div>
+                                        <div class="text-xs opacity-75">People interested in tobacco products</div>
+                                    </div>
+                                    <div class="text-xs opacity-75">1.8M</div>
+                                </div>
+                            </div>
+                            
+                            <div class="audience-item">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">🏥 Healthcare & Medical</div>
+                                        <div class="text-xs text-gray-500">People interested in health services</div>
+                                    </div>
+                                    <div class="text-xs text-gray-500">2.1M</div>
+                                </div>
+                            </div>
+                            
+                            <div class="audience-item">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">🚛 Blue Collar Workers</div>
+                                        <div class="text-xs text-gray-500">Construction, manufacturing workers</div>
+                                    </div>
+                                    <div class="text-xs text-gray-500">2.7M</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- In-Market Audiences -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-800 mb-3 flex items-center">
+                            <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                            In-Market Audiences (Ready to Buy)
+                        </h4>
+                        <p class="text-sm text-gray-600 mb-3">People actively researching or comparing products/services</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="audience-item selected">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">🚭 Smoking Cessation Products</div>
+                                        <div class="text-xs opacity-75">People looking to quit smoking</div>
+                                    </div>
+                                    <div class="text-xs opacity-75">450K</div>
+                                </div>
+                            </div>
+                            
+                            <div class="audience-item">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">💊 Health Supplements</div>
+                                        <div class="text-xs text-gray-500">People shopping for supplements</div>
+                                    </div>
+                                    <div class="text-xs text-gray-500">680K</div>
+                                </div>
+                            </div>
+                            
+                            <div class="audience-item">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">🏥 Medical Treatments</div>
+                                        <div class="text-xs text-gray-500">People seeking medical solutions</div>
+                                    </div>
+                                    <div class="text-xs text-gray-500">320K</div>
+                                </div>
+                            </div>
+                            
+                            <div class="audience-item">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-medium text-sm">🏃‍♂️ Fitness Equipment</div>
+                                        <div class="text-xs text-gray-500">People shopping for fitness gear</div>
+                                    </div>
+                                    <div class="text-xs text-gray-500">890K</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Life Events -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-800 mb-3 flex items-center">
+                            <span class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
+                            Life Events
+                        </h4>
+                        <p class="text-sm text-gray-600 mb-3">People experiencing major life changes</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <label class="flex items-center audience-item">
+                                <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3">
+                                <div class="flex-1">
+                                    <div class="font-medium text-sm">🏠 Recently moved</div>
+                                    <div class="text-xs text-gray-500">New location, new habits</div>
+                                </div>
+                                <div class="text-xs text-gray-500">180K</div>
+                            </label>
+                            
+                            <label class="flex items-center audience-item">
+                                <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3">
+                                <div class="flex-1">
+                                    <div class="font-medium text-sm">💼 New job</div>
+                                    <div class="text-xs text-gray-500">Career change opportunity</div>
+                                </div>
+                                <div class="text-xs text-gray-500">220K</div>
+                            </label>
+                            
+                            <label class="flex items-center audience-item">
+                                <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3">
+                                <div class="flex-1">
+                                    <div class="font-medium text-sm">💒 Recently married</div>
+                                    <div class="text-xs text-gray-500">New lifestyle decisions</div>
+                                </div>
+                                <div class="text-xs text-gray-500">95K</div>
+                            </label>
+                            
+                            <label class="flex items-center audience-item">
+                                <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-3">
+                                <div class="flex-1">
+                                    <div class="font-medium text-sm">👶 New parent</div>
+                                    <div class="text-xs text-gray-500">Health-conscious decisions</div>
+                                </div>
+                                <div class="text-xs text-gray-500">150K</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 4. CUSTOM AUDIENCES -->
+                    <div class="section-header">
+                        <h3 class="text-lg font-medium text-gray-900">📊 Custom Audiences</h3>
+                        <p class="text-sm text-gray-600">Use your own data to create targeted audiences</p>
+                    </div>
+                    <div class="space-y-4 mb-6">
+                        <div class="border border-gray-300 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-medium">🌐 Website Visitors</h4>
+                                <span class="text-sm text-gray-500">Last 30 days</span>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                    <span class="ml-2 text-sm">All website visitors (45,230 users)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Product page visitors (12,450 users)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Cart abandoners (3,210 users)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-300 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-medium">📧 Customer Lists</h4>
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Upload List</button>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Existing customers (8,920 users)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Email subscribers (15,670 users)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-300 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-medium">👥 Similar Audiences (Lookalike)</h4>
+                                <span class="text-sm text-gray-500">Based on your data</span>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Similar to converters (1.2M users)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm">Similar to high-value customers (890K users)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. DEVICE & SCHEDULING -->
+                    <div class="section-header">
+                        <h3 class="text-lg font-medium text-gray-900">📱 Device & Scheduling</h3>
+                        <p class="text-sm text-gray-600">Control when and where your ads appear</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-3">Device Targeting</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Device Types</label>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                            <span class="ml-2 text-sm">📱 Mobile</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                            <span class="ml-2 text-sm">💻 Desktop</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                            <span class="ml-2 text-sm">📟 Tablet</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Operating Systems</label>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                            <span class="ml-2 text-sm">Android</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                            <span class="ml-2 text-sm">iOS</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                            <span class="ml-2 text-sm">Windows</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-3">Ad Scheduling</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-4">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="scheduling" class="text-blue-600 focus:ring-blue-500" checked>
+                                        <span class="ml-2 text-sm">Show ads all the time</span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="scheduling" class="text-blue-600 focus:ring-blue-500">
+                                        <span class="ml-2 text-sm">Show ads on a schedule</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="border border-gray-300 rounded-lg p-3 bg-gray-50">
+                                    <div class="grid grid-cols-7 gap-1 text-center text-xs mb-2">
+                                        <div class="font-medium">M</div>
+                                        <div class="font-medium">T</div>
+                                        <div class="font-medium">W</div>
+                                        <div class="font-medium">T</div>
+                                        <div class="font-medium">F</div>
+                                        <div class="font-medium">S</div>
+                                        <div class="font-medium">S</div>
+                                    </div>
+                                    <div class="grid grid-cols-7 gap-1 mb-3">
+                                        <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                        <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                        <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                        <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                        <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                        <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                        <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <select class="px-2 py-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
+                                            <option>9:00 AM</option>
+                                            <option>10:00 AM</option>
+                                            <option>11:00 AM</option>
+                                        </select>
+                                        <select class="px-2 py-1 border border-gray-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
+                                            <option>6:00 PM</option>
+                                            <option>7:00 PM</option>
+                                            <option>8:00 PM</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Reach Estimate & Summary -->
+            <div class="space-y-6">
+                <!-- Reach Estimate -->
+                <div class="bg-white rounded-lg shadow border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📊 Reach Estimate</h3>
+                    
+                    <div class="reach-estimate mb-6">
+                        <div class="text-2xl font-bold mb-2">2.1M - 2.8M</div>
+                        <div class="text-sm opacity-90">Estimated weekly reach</div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Audience size</span>
+                            <span class="font-medium">Large</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Competition</span>
+                            <span class="font-medium text-yellow-600">Medium</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Suggested bid</span>
+                            <span class="font-medium">RM 0.85 - RM 1.20</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                        <div class="flex items-start space-x-3">
+                            <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <div class="font-medium text-blue-900 text-sm">Malaysia Optimization</div>
+                                <div class="text-xs text-blue-700 mt-1">Your targeting is well-optimized for the Malaysian market. Consider adding festival-specific interests during peak seasons.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Targeting Summary -->
+                <div class="bg-white rounded-lg shadow border p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🎯 Targeting Summary</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">Locations</span>
+                            <span class="text-sm font-medium">Malaysia (3 areas)</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">Languages</span>
+                            <span class="text-sm font-medium">2 selected</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">Age range</span>
+                            <span class="text-sm font-medium">18-44 years</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">Affinity audiences</span>
+                            <span class="text-sm font-medium">1 selected</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">In-market audiences</span>
+                            <span class="text-sm font-medium">1 selected</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">Custom audiences</span>
+                            <span class="text-sm font-medium">1 selected</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2">
+                            <span class="text-sm text-gray-600">Devices</span>
+                            <span class="text-sm font-medium">All devices</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Malaysia Festival Insights -->
+                <div class="bg-gradient-to-r from-red-50 to-yellow-50 border border-red-200 rounded-lg p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                            <span class="text-lg">🪔</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-red-900">Festival Targeting</h3>
+                            <p class="text-sm text-red-700">Deepavali is in 1 day!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span>Add Tamil language targeting</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span>Target gift shoppers & decorators</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Focus on Hindu community interests</span>
+                        </div>
+                    </div>
+                    
+                    <button class="mt-4 w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 text-sm">
+                        Apply Festival Targeting
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex items-center justify-between mt-8 pt-6 border-t">
+            <button onclick="window.location.href='campaign-builder.html'" class="flex items-center space-x-2 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="15 19l-7-7 7-7"></path>
+                </svg>
+                <span>Back: Campaign Setup</span>
+            </button>
+            
+            <div class="flex items-center space-x-4">
+                <button onclick="saveDraft()" class="px-6 py-3 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    Save Draft
+                </button>
+                <button onclick="nextStep()" class="btn-malaysia text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2">
+                    <span>Next: Budget & Bidding</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function saveDraft() {
+            alert('Campaign draft saved successfully!');
+        }
+
+        function nextStep() {
+            // Validate targeting selections
+            const selectedAffinity = document.querySelectorAll('.audience-item.selected').length;
+            const selectedLocations = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            
+            if (selectedAffinity === 0) {
+                alert('Please select at least one audience segment.');
+                return;
+            }
+            
+            // Save targeting data and proceed
+            localStorage.setItem('campaignTargeting', JSON.stringify({
+                affinity: selectedAffinity,
+                locations: selectedLocations,
+                step: 2,
+                completed: true
+            }));
+            
+            window.location.href = 'campaign-builder-step3.html';
+        }
+
+        // Toggle audience segment selection
+        document.querySelectorAll('.audience-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Don't toggle if clicking on checkbox
+                if (e.target.type === 'checkbox') return;
+                
+                this.classList.toggle('selected');
+                updateReachEstimate();
+            });
+        });
+
+        function updateReachEstimate() {
+            // Simulate reach calculation based on selections
+            const selectedSegments = document.querySelectorAll('.audience-item.selected').length;
+            const baseReach = 2100000;
+            const adjustedReach = baseReach + (selectedSegments * 300000);
+            
+            // Update reach display (simplified)
+            console.log('Updated reach estimate:', adjustedReach);
+        }
+
+        // Initialize with saved data if available
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedData = localStorage.getItem('campaignTargeting');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                console.log('Loaded targeting data:', data);
+            }
+        });
+    </script>
+</body>
+</html>

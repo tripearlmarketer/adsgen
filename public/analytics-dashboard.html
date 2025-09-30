@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Analytics Dashboard - DemandGen Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        accent: '#f59e0b',
+                        malaysia: {
+                            red: '#cc0001',
+                            gold: '#ffd700'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .malaysia-gradient {
+            background: linear-gradient(135deg, #cc0001 0%, #ffd700 100%);
+        }
+        .btn-malaysia {
+            background: linear-gradient(to right, #dc2626, #f59e0b);
+        }
+        .btn-malaysia:hover {
+            background: linear-gradient(to right, #b91c1c, #d97706);
+        }
+        .metric-card {
+            transition: all 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 malaysia-gradient rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">DemandGen Pro</h1>
+                        <p class="text-xs text-gray-500">Advanced Analytics Dashboard</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Real-time Status -->
+                    <div class="flex items-center space-x-2 px-3 py-1 rounded-full bg-green-100 text-green-800">
+                        <div class="w-2 h-2 bg-green-500 rounded-full pulse-dot"></div>
+                        <span class="text-sm">Live Data</span>
+                    </div>
+                    
+                    <!-- Date Range Selector -->
+                    <select class="px-3 py-1 border border-gray-300 rounded-lg text-sm">
+                        <option>Last 7 days</option>
+                        <option>Last 30 days</option>
+                        <option>Last 90 days</option>
+                        <option>Custom range</option>
+                    </select>
+                    
+                    <button onclick="window.location.href='advanced-campaign-builder.html'" class="btn-malaysia text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all">
+                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        New Campaign
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Key Metrics Row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            <!-- Total Spend -->
+            <div class="metric-card bg-white p-6 rounded-lg shadow border">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-500">Total Spend</h3>
+                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">RM 18,750</div>
+                <div class="flex items-center text-sm">
+                    <span class="text-green-600 font-medium">+12.5%</span>
+                    <span class="text-gray-500 ml-1">vs last period</span>
+                </div>
+            </div>
+
+            <!-- Impressions -->
+            <div class="metric-card bg-white p-6 rounded-lg shadow border">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-500">Impressions</h3>
+                    <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">1.2M</div>
+                <div class="flex items-center text-sm">
+                    <span class="text-green-600 font-medium">+8.2%</span>
+                    <span class="text-gray-500 ml-1">vs last period</span>
+                </div>
+            </div>
+
+            <!-- Clicks -->
+            <div class="metric-card bg-white p-6 rounded-lg shadow border">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-500">Clicks</h3>
+                    <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">24,580</div>
+                <div class="flex items-center text-sm">
+                    <span class="text-green-600 font-medium">+15.3%</span>
+                    <span class="text-gray-500 ml-1">vs last period</span>
+                </div>
+            </div>
+
+            <!-- Conversions -->
+            <div class="metric-card bg-white p-6 rounded-lg shadow border">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-medium text-gray-500">Conversions</h3>
+                    <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">892</div>
+                <div class="flex items-center text-sm">
+                    <span class="text-green-600 font-medium">+22.1%</span>
+                    <span class="text-gray-500 ml-1">vs last period</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-12 gap-6 mb-8">
+            <!-- Performance Trend Chart -->
+            <div class="col-span-8 bg-white p-6 rounded-lg shadow border">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold">Performance Trends</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-lg">Spend</button>
+                        <button class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Clicks</button>
+                        <button class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Conversions</button>
+                    </div>
+                </div>
+                <canvas id="performanceChart" height="300"></canvas>
+            </div>
+
+            <!-- Top Performing Audiences -->
+            <div class="col-span-4 bg-white p-6 rounded-lg shadow border">
+                <h3 class="text-lg font-semibold mb-6">Top Audiences</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">🚬</span>
+                            <div>
+                                <div class="font-medium text-sm">Perokok & Vape</div>
+                                <div class="text-xs text-gray-500">2.1M reach</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-green-600">4.2x ROAS</div>
+                            <div class="text-xs text-gray-500">RM 8,250</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">💪</span>
+                            <div>
+                                <div class="font-medium text-sm">Kesihatan & Wellness</div>
+                                <div class="text-xs text-gray-500">1.8M reach</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-green-600">3.8x ROAS</div>
+                            <div class="text-xs text-gray-500">RM 6,500</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">🚛</span>
+                            <div>
+                                <div class="font-medium text-sm">Pekerja Luar</div>
+                                <div class="text-xs text-gray-500">1.5M reach</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-green-600">3.2x ROAS</div>
+                            <div class="text-xs text-gray-500">RM 4,000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Analytics Row -->
+        <div class="grid grid-cols-12 gap-6 mb-8">
+            <!-- Attribution Analysis -->
+            <div class="col-span-6 bg-white p-6 rounded-lg shadow border">
+                <h3 class="text-lg font-semibold mb-6">Attribution Analysis</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                        <div>
+                            <div class="font-medium">First-Click Attribution</div>
+                            <div class="text-sm text-gray-500">Credits first touchpoint</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold">425</div>
+                            <div class="text-sm text-gray-500">conversions</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                        <div>
+                            <div class="font-medium">Last-Click Attribution</div>
+                            <div class="text-sm text-gray-500">Credits last touchpoint</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold">892</div>
+                            <div class="text-sm text-gray-500">conversions</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 border border-blue-200 bg-blue-50 rounded-lg">
+                        <div>
+                            <div class="font-medium text-blue-900">Data-Driven Attribution</div>
+                            <div class="text-sm text-blue-700">AI-powered attribution model</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-blue-900">658</div>
+                            <div class="text-sm text-blue-700">conversions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversion Path Analysis -->
+            <div class="col-span-6 bg-white p-6 rounded-lg shadow border">
+                <h3 class="text-lg font-semibold mb-6">Customer Journey</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                        <div class="flex-1">
+                            <div class="font-medium">Awareness</div>
+                            <div class="text-sm text-gray-500">Display ads, YouTube</div>
+                        </div>
+                        <div class="text-sm font-medium">45%</div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                        <div class="flex-1">
+                            <div class="font-medium">Consideration</div>
+                            <div class="text-sm text-gray-500">Search ads, Social</div>
+                        </div>
+                        <div class="text-sm font-medium">32%</div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                        <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                        <div class="flex-1">
+                            <div class="font-medium">Conversion</div>
+                            <div class="text-sm text-gray-500">Direct, Email</div>
+                        </div>
+                        <div class="text-sm font-medium">23%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Campaign Performance -->
+        <div class="bg-white rounded-lg shadow border p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold">Live Campaign Performance</h3>
+                <div class="flex items-center space-x-2 text-sm text-gray-500">
+                    <div class="w-2 h-2 bg-green-500 rounded-full pulse-dot"></div>
+                    <span>Updated 30 seconds ago</span>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Campaign</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Spend Today</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Impressions</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">CTR</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Conversions</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ROAS</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="font-medium text-gray-900">Perokok & Vape Malaysia Q4</div>
+                                <div class="text-sm text-gray-500">🚬 Perokok & Vape audience</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full mr-1 pulse-dot"></div>
+                                    Active
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-900">RM 145.50</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">12,450</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">2.8%</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">28</td>
+                            <td class="px-6 py-4 text-sm font-medium text-green-600">4.2x</td>
+                            <td class="px-6 py-4">
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Optimize</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="font-medium text-gray-900">Kesihatan & Wellness Campaign</div>
+                                <div class="text-sm text-gray-500">💪 Imun & Gaya Hidup Sihat</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full mr-1 pulse-dot"></div>
+                                    Active
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-900">RM 98.75</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">8,920</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">3.2%</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">18</td>
+                            <td class="px-6 py-4 text-sm font-medium text-green-600">3.8x</td>
+                            <td class="px-6 py-4">
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Optimize</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="font-medium text-gray-900">Pekerja Luar Targeting</div>
+                                <div class="text-sm text-gray-500">🚛 Pekerja Luar & Pemandu</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Learning
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-900">RM 67.25</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">5,680</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">2.1%</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">8</td>
+                            <td class="px-6 py-4 text-sm font-medium text-green-600">3.2x</td>
+                            <td class="px-6 py-4">
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Monitor</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- AI Insights & Recommendations -->
+        <div class="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-blue-900">🤖 AI-Powered Insights</h3>
+                    <p class="text-sm text-blue-700">Smart recommendations based on your campaign performance</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-4 rounded-lg border border-blue-200">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span class="text-sm font-medium text-green-800">High Impact</span>
+                    </div>
+                    <p class="text-sm text-gray-700 mb-3">Increase budget for "Perokok & Vape" campaign by 25% - projected +RM 2,100 revenue</p>
+                    <button class="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full hover:bg-green-200">Apply Recommendation</button>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border border-blue-200">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                        <span class="text-sm font-medium text-yellow-800">Medium Impact</span>
+                    </div>
+                    <p class="text-sm text-gray-700 mb-3">Add negative keywords: "free", "cheap" to improve quality score</p>
+                    <button class="text-xs bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full hover:bg-yellow-200">Review Keywords</button>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border border-blue-200">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <span class="text-sm font-medium text-blue-800">Optimization</span>
+                    </div>
+                    <p class="text-sm text-gray-700 mb-3">Peak performance hours: 8-10 PM. Consider dayparting adjustments</p>
+                    <button class="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full hover:bg-blue-200">Set Schedule</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Performance Chart
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        const performanceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Oct 1', 'Oct 2', 'Oct 3', 'Oct 4', 'Oct 5', 'Oct 6', 'Oct 7'],
+                datasets: [{
+                    label: 'Spend (RM)',
+                    data: [2100, 2350, 2800, 2650, 3100, 2900, 3250],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Revenue (RM)',
+                    data: [8800, 9200, 11500, 10800, 13200, 12100, 13650],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'RM ' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Simulate real-time updates
+        setInterval(() => {
+            // Update live data indicators
+            const dots = document.querySelectorAll('.pulse-dot');
+            dots.forEach(dot => {
+                dot.style.animation = 'none';
+                setTimeout(() => {
+                    dot.style.animation = 'pulse 2s infinite';
+                }, 10);
+            });
+        }, 30000);
+
+        // Auto-refresh data every 30 seconds
+        setInterval(() => {
+            console.log('Refreshing live data...');
+            // In real implementation, this would fetch fresh data from API
+        }, 30000);
+    </script>
+</body>
+</html>

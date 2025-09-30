@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malaysia Festive Season Planner - DemandGen Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        accent: '#f59e0b',
+                        malaysia: {
+                            red: '#cc0001',
+                            gold: '#ffd700'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .malaysia-gradient {
+            background: linear-gradient(135deg, #cc0001 0%, #ffd700 100%);
+        }
+        .btn-malaysia {
+            background: linear-gradient(to right, #dc2626, #f59e0b);
+        }
+        .btn-malaysia:hover {
+            background: linear-gradient(to right, #b91c1c, #d97706);
+        }
+        .festive-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .festive-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .festive-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .festive-card:hover::before {
+            left: 100%;
+        }
+        .countdown-timer {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        .pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.6); }
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+        }
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .festive-day {
+            background: linear-gradient(135deg, #fef3c7, #fbbf24);
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        .ramadan-day {
+            background: linear-gradient(135deg, #dbeafe, #3b82f6);
+            color: white;
+            border-radius: 50%;
+        }
+        .chinese-day {
+            background: linear-gradient(135deg, #fecaca, #dc2626);
+            color: white;
+            border-radius: 50%;
+        }
+        .deepavali-day {
+            background: linear-gradient(135deg, #fed7aa, #ea580c);
+            color: white;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 malaysia-gradient rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">DemandGen Pro</h1>
+                        <p class="text-xs text-gray-500">Malaysia Festive Season Planner</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 px-3 py-1 rounded-full bg-yellow-100 text-yellow-800">
+                        <span class="text-2xl">🇲🇾</span>
+                        <span class="text-sm">Malaysia Focus</span>
+                    </div>
+                    
+                    <button onclick="window.location.href='ai-optimization.html'" class="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        AI Optimizer
+                    </button>
+                    
+                    <button onclick="window.location.href='analytics-dashboard.html'" class="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Analytics
+                    </button>
+                    
+                    <button onclick="window.location.href='advanced-campaign-builder.html'" class="btn-malaysia text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all">
+                        New Campaign
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center space-x-4 mb-6">
+                <span class="text-6xl">🇲🇾</span>
+                <div>
+                    <h2 class="text-4xl font-bold">Malaysia Festive Season Planner</h2>
+                    <p class="text-xl text-red-100">Optimize your campaigns for Malaysian festivals & cultural events</p>
+                </div>
+                <span class="text-6xl">🎉</span>
+            </div>
+            
+            <!-- Next Festival Countdown -->
+            <div class="bg-white bg-opacity-20 rounded-lg p-6 max-w-md mx-auto">
+                <h3 class="text-lg font-semibold mb-2">Next Major Festival</h3>
+                <div class="text-3xl font-bold mb-2">🏮 Chinese New Year 2026</div>
+                <div class="countdown-timer text-2xl" id="countdown">Loading...</div>
+                <p class="text-sm text-red-100 mt-2">Start planning your campaigns now!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Festival Calendar Overview -->
+        <div class="bg-white rounded-lg shadow border p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-semibold">🗓️ 2025-2026 Festival Calendar</h3>
+                <div class="flex space-x-2">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"></div>
+                        <span class="text-sm">Ramadan</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-gradient-to-r from-red-400 to-red-600 rounded-full"></div>
+                        <span class="text-sm">Chinese New Year</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full"></div>
+                        <span class="text-sm">Deepavali</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></div>
+                        <span class="text-sm">Other Festivals</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mini Calendar -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 2025 Calendar -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-center">2025 Remaining Festivals</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">🪔</span>
+                                <div>
+                                    <div class="font-medium">Deepavali</div>
+                                    <div class="text-sm text-gray-500">October 31, 2025</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-orange-600">1 day left</div>
+                                <div class="text-xs text-gray-500">High impact</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">🎄</span>
+                                <div>
+                                    <div class="font-medium">Christmas</div>
+                                    <div class="text-sm text-gray-500">December 25, 2025</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-green-600">56 days left</div>
+                                <div class="text-xs text-gray-500">Medium impact</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2026 Calendar -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-center">2026 Major Festivals</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">🏮</span>
+                                <div>
+                                    <div class="font-medium">Chinese New Year</div>
+                                    <div class="text-sm text-gray-500">February 17, 2026</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-red-600">140 days left</div>
+                                <div class="text-xs text-gray-500">Very high impact</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">🌙</span>
+                                <div>
+                                    <div class="font-medium">Ramadan</div>
+                                    <div class="text-sm text-gray-500">February 28 - March 30, 2026</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-blue-600">151 days left</div>
+                                <div class="text-xs text-gray-500">Very high impact</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">🕌</span>
+                                <div>
+                                    <div class="font-medium">Hari Raya Aidilfitri</div>
+                                    <div class="text-sm text-gray-500">March 31, 2026</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-purple-600">182 days left</div>
+                                <div class="text-xs text-gray-500">Very high impact</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Festival Campaign Strategies -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- Deepavali Strategy (Current) -->
+            <div class="festive-card bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-6 pulse-glow">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="text-4xl">🪔</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-orange-900">Deepavali 2025 Strategy</h3>
+                        <p class="text-sm text-orange-700">Festival of Lights - October 31, 2025</p>
+                        <div class="text-xs text-orange-600 font-medium">⚡ URGENT: 1 day remaining!</div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-lg border border-orange-200">
+                        <h4 class="font-semibold text-gray-900 mb-2">🎯 Target Audiences</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                                <span>Tamil-speaking Malaysians (800K+ reach)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                                <span>Hindu community & cultural enthusiasts</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                                <span>Gift shoppers & home decorators</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border border-orange-200">
+                        <h4 class="font-semibold text-gray-900 mb-2">💡 Campaign Ideas</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                <span>Traditional sweets & oil lamps</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                <span>Gold jewelry & traditional wear</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                <span>Home cleaning & decoration services</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-orange-100 p-3 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-orange-800">Expected ROAS Boost</span>
+                            <span class="text-lg font-bold text-orange-900">+35%</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full btn-malaysia text-white py-3 rounded-lg hover:shadow-lg transition-all">
+                        🚀 Launch Deepavali Campaign Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chinese New Year Strategy (Next Major) -->
+            <div class="festive-card bg-gradient-to-br from-red-50 to-yellow-50 border border-red-200 rounded-lg p-6">
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="text-4xl">🏮</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-red-900">Chinese New Year 2026</h3>
+                        <p class="text-sm text-red-700">Year of the Horse - February 17, 2026</p>
+                        <div class="text-xs text-red-600 font-medium">📅 140 days to prepare</div>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-lg border border-red-200">
+                        <h4 class="font-semibold text-gray-900 mb-2">🎯 Target Audiences</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                <span>Chinese-speaking Malaysians (6.2M+ reach)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                <span>Traditional & modern gift buyers</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                <span>Health & wellness enthusiasts</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-lg border border-red-200">
+                        <h4 class="font-semibold text-gray-900 mb-2">💡 Campaign Ideas</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                <span>Health supplements for new year resolutions</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                <span>Red packets & traditional decorations</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                <span>Reunion dinner catering & ingredients</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-red-100 p-3 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-red-800">Expected ROAS Boost</span>
+                            <span class="text-lg font-bold text-red-900">+45%</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-all">
+                        📋 Plan CNY Campaign Strategy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Festival Performance Analytics -->
+        <div class="bg-white rounded-lg shadow border p-6 mb-8">
+            <h3 class="text-xl font-semibold mb-6">📊 Historical Festival Performance</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="text-center p-4 bg-blue-50 rounded-lg">
+                    <div class="text-3xl font-bold text-blue-600">+67%</div>
+                    <div class="text-sm text-gray-600">Average ROAS increase during festivals</div>
+                </div>
+                <div class="text-center p-4 bg-green-50 rounded-lg">
+                    <div class="text-3xl font-bold text-green-600">+89%</div>
+                    <div class="text-sm text-gray-600">Click-through rate improvement</div>
+                </div>
+                <div class="text-center p-4 bg-purple-50 rounded-lg">
+                    <div class="text-3xl font-bold text-purple-600">+156%</div>
+                    <div class="text-sm text-gray-600">Conversion rate during peak days</div>
+                </div>
+            </div>
+            
+            <canvas id="festivalChart" height="300"></canvas>
+        </div>
+
+        <!-- Smart Festival Recommendations -->
+        <div class="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-900">🤖 AI Festival Recommendations</h3>
+                    <p class="text-sm text-blue-700">Smart insights for upcoming festivals</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-gray-900 mb-3">⚡ Immediate Actions (Next 7 Days)</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg">
+                            <span class="text-2xl">🪔</span>
+                            <div>
+                                <div class="font-medium text-orange-900">Deepavali Last-Minute Push</div>
+                                <div class="text-sm text-orange-700">Increase budgets by 50% for gift & decoration campaigns</div>
+                                <button class="text-xs bg-orange-600 text-white px-3 py-1 rounded-full mt-2 hover:bg-orange-700">Apply Now</button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
+                            <span class="text-2xl">🎄</span>
+                            <div>
+                                <div class="font-medium text-green-900">Christmas Prep</div>
+                                <div class="text-sm text-green-700">Start Christmas campaign planning - 56 days optimal lead time</div>
+                                <button class="text-xs bg-green-600 text-white px-3 py-1 rounded-full mt-2 hover:bg-green-700">Schedule Planning</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border border-blue-200">
+                    <h4 class="font-semibold text-gray-900 mb-3">📅 Long-term Planning (Next 6 Months)</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg">
+                            <span class="text-2xl">🏮</span>
+                            <div>
+                                <div class="font-medium text-red-900">Chinese New Year 2026</div>
+                                <div class="text-sm text-red-700">Book premium ad placements now - 140 days advance booking recommended</div>
+                                <button class="text-xs bg-red-600 text-white px-3 py-1 rounded-full mt-2 hover:bg-red-700">Reserve Slots</button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                            <span class="text-2xl">🌙</span>
+                            <div>
+                                <div class="font-medium text-blue-900">Ramadan 2026 Strategy</div>
+                                <div class="text-sm text-blue-700">Prepare health & wellness campaigns for pre-Ramadan season</div>
+                                <button class="text-xs bg-blue-600 text-white px-3 py-1 rounded-full mt-2 hover:bg-blue-700">Set Reminders</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Countdown Timer for Chinese New Year 2026
+        function updateCountdown() {
+            const cnyDate = new Date('2026-02-17T00:00:00+08:00');
+            const now = new Date();
+            const diff = cnyDate - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdown').textContent = 
+                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Festival Performance Chart
+        const ctx = document.getElementById('festivalChart').getContext('2d');
+        const festivalChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Regular ROAS',
+                    data: [3.2, 3.1, 3.3, 3.0, 3.2, 3.1, 3.0, 3.2, 3.1, 3.3, 3.2, 3.4],
+                    borderColor: '#6b7280',
+                    backgroundColor: 'rgba(107, 114, 128, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: 'Festival Periods',
+                    data: [3.2, 5.8, 4.2, 3.0, 4.5, 3.1, 3.0, 3.2, 3.1, 5.2, 3.2, 4.8],
+                    borderColor: '#dc2626',
+                    backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                    tension: 0.4,
+                    pointBackgroundColor: ['#6b7280', '#dc2626', '#6b7280', '#6b7280', '#10b981', '#6b7280', '#6b7280', '#6b7280', '#6b7280', '#ea580c', '#6b7280', '#059669'],
+                    pointRadius: [3, 8, 3, 3, 6, 3, 3, 3, 3, 8, 3, 6]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            afterLabel: function(context) {
+                                const festivalMonths = {
+                                    1: 'Chinese New Year',
+                                    4: 'Hari Raya',
+                                    9: 'Deepavali',
+                                    11: 'Christmas'
+                                };
+                                return festivalMonths[context.dataIndex] || '';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 2.5,
+                        max: 6.5,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toFixed(1) + 'x';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Auto-update festival urgency
+        setInterval(() => {
+            const deepavaliCard = document.querySelector('.pulse-glow');
+            if (deepavaliCard) {
+                // Simulate urgency updates
+                const urgencyText = deepavaliCard.querySelector('.text-orange-600');
+                if (urgencyText) {
+                    const hours = Math.floor(Math.random() * 24);
+                    urgencyText.textContent = `⚡ URGENT: ${hours} hours remaining!`;
+                }
+            }
+        }, 10000);
+    </script>
+</body>
+</html>

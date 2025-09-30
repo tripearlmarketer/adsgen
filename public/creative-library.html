@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Asset Library - DemandGen Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        accent: '#f59e0b',
+                        malaysia: {
+                            red: '#cc0001',
+                            gold: '#ffd700'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .malaysia-gradient {
+            background: linear-gradient(135deg, #cc0001 0%, #ffd700 100%);
+        }
+        .btn-malaysia {
+            background: linear-gradient(to right, #dc2626, #f59e0b);
+        }
+        .btn-malaysia:hover {
+            background: linear-gradient(to right, #b91c1c, #d97706);
+        }
+        .asset-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .asset-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .asset-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .asset-card:hover::before {
+            left: 100%;
+        }
+        .upload-zone {
+            border: 2px dashed #d1d5db;
+            transition: all 0.3s ease;
+        }
+        .upload-zone.dragover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .performance-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .performance-high {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        .performance-medium {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        .performance-low {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+        .grid-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .list-view {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .asset-preview {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .video-preview {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .play-button {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .play-button:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 malaysia-gradient rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">DemandGen Pro</h1>
+                        <p class="text-xs text-gray-500">Creative Asset Library</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 px-3 py-1 rounded-full bg-purple-100 text-purple-800">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span class="text-sm">Creative Hub</span>
+                    </div>
+                    
+                    <button onclick="window.location.href='bulk-management.html'" class="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Bulk Manager
+                    </button>
+                    
+                    <button onclick="window.location.href='analytics-dashboard.html'" class="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Analytics
+                    </button>
+                    
+                    <button onclick="showUploadModal()" class="btn-malaysia text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all">
+                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        Upload Assets
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Asset Library Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow border">
+                <div class="flex items-center space-x-3 mb-3">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Total Assets</h3>
+                        <p class="text-sm text-gray-500">All creative files</p>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-blue-600 mb-1">247</div>
+                <div class="text-sm text-gray-500">+12 this week</div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border">
+                <div class="flex items-center space-x-3 mb-3">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Top Performers</h3>
+                        <p class="text-sm text-gray-500">High CTR assets</p>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-green-600 mb-1">34</div>
+                <div class="text-sm text-gray-500">Above 4% CTR</div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border">
+                <div class="flex items-center space-x-3 mb-3">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Video Assets</h3>
+                        <p class="text-sm text-gray-500">Video creatives</p>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-purple-600 mb-1">89</div>
+                <div class="text-sm text-gray-500">15-60 seconds</div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow border">
+                <div class="flex items-center space-x-3 mb-3">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">Malaysia Focus</h3>
+                        <p class="text-sm text-gray-500">Localized content</p>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-yellow-600 mb-1">156</div>
+                <div class="text-sm text-gray-500">63% of library</div>
+            </div>
+        </div>
+
+        <!-- Filters and View Controls -->
+        <div class="bg-white rounded-lg shadow border p-6 mb-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" placeholder="Search assets..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" id="searchInput">
+                    </div>
+                    
+                    <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="image">Images</option>
+                        <option value="video">Videos</option>
+                        <option value="headline">Headlines</option>
+                        <option value="description">Descriptions</option>
+                    </select>
+                    
+                    <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" id="performanceFilter">
+                        <option value="">All Performance</option>
+                        <option value="high">High Performers (4%+ CTR)</option>
+                        <option value="medium">Medium Performers (2-4% CTR)</option>
+                        <option value="low">Low Performers (<2% CTR)</option>
+                        <option value="untested">Untested</option>
+                    </select>
+                    
+                    <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" id="audienceFilter">
+                        <option value="">All Audiences</option>
+                        <option value="perokok">🚬 Perokok & Vape</option>
+                        <option value="kesihatan">💪 Kesihatan & Wellness</option>
+                        <option value="pekerja">🚛 Pekerja Luar</option>
+                        <option value="recovery">🏥 Recovery Products</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    <div class="flex border border-gray-300 rounded-lg overflow-hidden">
+                        <button onclick="setView('grid')" class="px-3 py-2 bg-blue-600 text-white" id="gridViewBtn">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                            </svg>
+                        </button>
+                        <button onclick="setView('list')" class="px-3 py-2 text-gray-600 hover:bg-gray-50" id="listViewBtn">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <button onclick="bulkSelect()" class="px-4 py-2 text-blue-600 hover:bg-blue-50 border border-blue-300 rounded-lg">
+                        Select Multiple
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Asset Grid -->
+        <div class="grid-view" id="assetContainer">
+            <!-- High Performing Image Asset -->
+            <div class="asset-card bg-white rounded-lg shadow border overflow-hidden">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=200&fit=crop" alt="Smoking Cessation Malaysia" class="asset-preview">
+                    <div class="performance-badge performance-high">High CTR</div>
+                    <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                        1080x1080
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-gray-900">Smoking Cessation Hero</h3>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Image</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">🚬 Perokok & Vape audience • Used in 8 campaigns</p>
+                    <div class="grid grid-cols-3 gap-2 text-xs text-gray-500 mb-3">
+                        <div>CTR: <span class="font-medium text-green-600">4.8%</span></div>
+                        <div>Impressions: <span class="font-medium">125K</span></div>
+                        <div>Clicks: <span class="font-medium">6,000</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="useAsset(1)" class="flex-1 bg-blue-600 text-white py-2 px-3 rounded text-sm hover:bg-blue-700">
+                            Use in Campaign
+                        </button>
+                        <button onclick="editAsset(1)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            Edit
+                        </button>
+                        <button onclick="duplicateAsset(1)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            📋
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Asset -->
+            <div class="asset-card bg-white rounded-lg shadow border overflow-hidden">
+                <div class="relative">
+                    <div class="video-preview asset-preview">
+                        <div class="play-button">
+                            <svg class="w-6 h-6 text-blue-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="performance-badge performance-medium">Medium CTR</div>
+                    <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                        30s • 1920x1080
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-gray-900">Health Supplement Demo</h3>
+                        <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Video</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">💪 Kesihatan & Wellness • Used in 5 campaigns</p>
+                    <div class="grid grid-cols-3 gap-2 text-xs text-gray-500 mb-3">
+                        <div>CTR: <span class="font-medium text-yellow-600">3.2%</span></div>
+                        <div>Views: <span class="font-medium">89K</span></div>
+                        <div>Completion: <span class="font-medium">78%</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="useAsset(2)" class="flex-1 bg-blue-600 text-white py-2 px-3 rounded text-sm hover:bg-blue-700">
+                            Use in Campaign
+                        </button>
+                        <button onclick="editAsset(2)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            Edit
+                        </button>
+                        <button onclick="duplicateAsset(2)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            📋
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Asset - Headlines -->
+            <div class="asset-card bg-white rounded-lg shadow border overflow-hidden">
+                <div class="relative bg-gradient-to-br from-blue-50 to-purple-50 asset-preview flex items-center justify-center">
+                    <div class="text-center p-6">
+                        <div class="text-2xl font-bold text-gray-900 mb-2">"Berhenti Merokok Hari Ini"</div>
+                        <div class="text-sm text-gray-600">Headline • 22 characters</div>
+                    </div>
+                    <div class="performance-badge performance-high">High CTR</div>
+                </div>
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-gray-900">Malaysia Quit Smoking</h3>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Headline</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">🚬 Perokok & Vape • Bahasa Malaysia • Used in 12 campaigns</p>
+                    <div class="grid grid-cols-3 gap-2 text-xs text-gray-500 mb-3">
+                        <div>CTR: <span class="font-medium text-green-600">5.1%</span></div>
+                        <div>Impressions: <span class="font-medium">200K</span></div>
+                        <div>Clicks: <span class="font-medium">10,200</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="useAsset(3)" class="flex-1 bg-blue-600 text-white py-2 px-3 rounded text-sm hover:bg-blue-700">
+                            Use in Campaign
+                        </button>
+                        <button onclick="editAsset(3)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            Edit
+                        </button>
+                        <button onclick="duplicateAsset(3)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            📋
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Malaysia Festival Asset -->
+            <div class="asset-card bg-white rounded-lg shadow border overflow-hidden">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=200&fit=crop" alt="Deepavali Campaign" class="asset-preview">
+                    <div class="performance-badge performance-high">High CTR</div>
+                    <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                        1200x628
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-gray-900">Deepavali Special 2025</h3>
+                        <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">Festival</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">🪔 Festival Targeting • Tamil community • Used in 3 campaigns</p>
+                    <div class="grid grid-cols-3 gap-2 text-xs text-gray-500 mb-3">
+                        <div>CTR: <span class="font-medium text-green-600">6.2%</span></div>
+                        <div>Impressions: <span class="font-medium">45K</span></div>
+                        <div>Clicks: <span class="font-medium">2,790</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="useAsset(4)" class="flex-1 bg-blue-600 text-white py-2 px-3 rounded text-sm hover:bg-blue-700">
+                            Use in Campaign
+                        </button>
+                        <button onclick="editAsset(4)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            Edit
+                        </button>
+                        <button onclick="duplicateAsset(4)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            📋
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Low Performing Asset -->
+            <div class="asset-card bg-white rounded-lg shadow border overflow-hidden">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop" alt="Generic Health" class="asset-preview">
+                    <div class="performance-badge performance-low">Low CTR</div>
+                    <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                        800x600
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-gray-900">Generic Health Image</h3>
+                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">Image</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">💪 Kesihatan & Wellness • Used in 2 campaigns</p>
+                    <div class="grid grid-cols-3 gap-2 text-xs text-gray-500 mb-3">
+                        <div>CTR: <span class="font-medium text-red-600">1.2%</span></div>
+                        <div>Impressions: <span class="font-medium">15K</span></div>
+                        <div>Clicks: <span class="font-medium">180</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="optimizeAsset(5)" class="flex-1 bg-yellow-600 text-white py-2 px-3 rounded text-sm hover:bg-yellow-700">
+                            🤖 AI Optimize
+                        </button>
+                        <button onclick="editAsset(5)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            Edit
+                        </button>
+                        <button onclick="archiveAsset(5)" class="px-3 py-2 border border-red-300 text-red-600 rounded text-sm hover:bg-red-50">
+                            Archive
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Untested Asset -->
+            <div class="asset-card bg-white rounded-lg shadow border overflow-hidden">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=200&fit=crop" alt="New Upload" class="asset-preview">
+                    <div class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-xs">
+                        NEW
+                    </div>
+                    <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                        1080x1080
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-gray-900">Recovery Product Hero</h3>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Image</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">🏥 Recovery Products • Not yet tested</p>
+                    <div class="grid grid-cols-3 gap-2 text-xs text-gray-500 mb-3">
+                        <div>CTR: <span class="font-medium text-gray-400">-</span></div>
+                        <div>Impressions: <span class="font-medium text-gray-400">-</span></div>
+                        <div>Clicks: <span class="font-medium text-gray-400">-</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="useAsset(6)" class="flex-1 bg-blue-600 text-white py-2 px-3 rounded text-sm hover:bg-blue-700">
+                            Test in Campaign
+                        </button>
+                        <button onclick="editAsset(6)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            Edit
+                        </button>
+                        <button onclick="duplicateAsset(6)" class="px-3 py-2 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            📋
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Creative Insights -->
+        <div class="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6 mt-8">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-purple-900">🎨 AI Creative Insights</h3>
+                    <p class="text-sm text-purple-700">Smart recommendations for your creative assets</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-gray-900 mb-3">🏆 Top Performing Elements</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between">
+                            <span>Red/Gold color scheme</span>
+                            <span class="font-medium text-green-600">+45% CTR</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Bahasa Malaysia text</span>
+                            <span class="font-medium text-green-600">+32% engagement</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Before/after visuals</span>
+                            <span class="font-medium text-green-600">+28% conversions</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-gray-900 mb-3">📊 Malaysia Market Trends</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span>Square format (1:1) performs best</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>15-30 second videos optimal</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span>Festival themes boost engagement</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-semibold text-gray-900 mb-3">💡 Optimization Suggestions</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span>Create Deepavali variants (urgent)</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                            <span>Test Tamil language headlines</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                            <span>Add mobile-first video formats</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 hidden z-50" id="uploadModal">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-semibold">Upload Creative Assets</h3>
+                    <button onclick="closeUploadModal()" class="text-gray-400 hover:text-gray-600">✕</button>
+                </div>
+                
+                <div class="upload-zone rounded-lg p-8 text-center mb-6" id="uploadZone">
+                    <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    <p class="text-lg font-medium text-gray-900 mb-2">Drop files here or click to upload</p>
+                    <p class="text-sm text-gray-500 mb-4">Support: JPG, PNG, MP4, MOV (Max 50MB)</p>
+                    <button class="btn-malaysia text-white px-6 py-2 rounded-lg">
+                        Choose Files
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Asset Category</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option>🚬 Perokok & Vape</option>
+                            <option>💪 Kesihatan & Wellness</option>
+                            <option>🚛 Pekerja Luar</option>
+                            <option>🏥 Recovery Products</option>
+                            <option>🪔 Festival Content</option>
+                        </select>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option>Bahasa Malaysia</option>
+                                <option>English</option>
+                                <option>Chinese (Simplified)</option>
+                                <option>Chinese (Traditional)</option>
+                                <option>Tamil</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Format</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option>Square (1:1)</option>
+                                <option>Landscape (16:9)</option>
+                                <option>Portrait (9:16)</option>
+                                <option>Story (9:16)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tags (comma separated)</label>
+                        <input type="text" placeholder="health, malaysia, smoking, cessation" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                
+                <div class="flex space-x-3 mt-6">
+                    <button onclick="uploadAssets()" class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+                        Upload Assets
+                    </button>
+                    <button onclick="closeUploadModal()" class="flex-1 border border-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-50">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentView = 'grid';
+
+        function setView(view) {
+            currentView = view;
+            const container = document.getElementById('assetContainer');
+            const gridBtn = document.getElementById('gridViewBtn');
+            const listBtn = document.getElementById('listViewBtn');
+            
+            if (view === 'grid') {
+                container.className = 'grid-view';
+                gridBtn.className = 'px-3 py-2 bg-blue-600 text-white';
+                listBtn.className = 'px-3 py-2 text-gray-600 hover:bg-gray-50';
+            } else {
+                container.className = 'list-view';
+                listBtn.className = 'px-3 py-2 bg-blue-600 text-white';
+                gridBtn.className = 'px-3 py-2 text-gray-600 hover:bg-gray-50';
+            }
+        }
+
+        function showUploadModal() {
+            document.getElementById('uploadModal').classList.remove('hidden');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.add('hidden');
+        }
+
+        function uploadAssets() {
+            alert('Upload functionality - Coming Soon!');
+            closeUploadModal();
+        }
+
+        function useAsset(id) {
+            alert(`Using asset ${id} in campaign - Coming Soon!`);
+        }
+
+        function editAsset(id) {
+            alert(`Edit asset ${id} - Coming Soon!`);
+        }
+
+        function duplicateAsset(id) {
+            alert(`Duplicate asset ${id} - Coming Soon!`);
+        }
+
+        function optimizeAsset(id) {
+            alert(`AI optimizing asset ${id} - Coming Soon!`);
+        }
+
+        function archiveAsset(id) {
+            if (confirm('Archive this asset? It will be moved to archived folder.')) {
+                alert(`Asset ${id} archived successfully!`);
+            }
+        }
+
+        function bulkSelect() {
+            alert('Bulk selection mode - Coming Soon!');
+        }
+
+        // Drag and drop functionality
+        const uploadZone = document.getElementById('uploadZone');
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            console.log('Files dropped:', files);
+            // Handle file upload
+        });
+
+        // Search and filter functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            console.log('Search:', e.target.value);
+            // Implement search filtering
+        });
+
+        document.getElementById('typeFilter').addEventListener('change', function(e) {
+            console.log('Type filter:', e.target.value);
+            // Implement type filtering
+        });
+
+        document.getElementById('performanceFilter').addEventListener('change', function(e) {
+            console.log('Performance filter:', e.target.value);
+            // Implement performance filtering
+        });
+
+        document.getElementById('audienceFilter').addEventListener('change', function(e) {
+            console.log('Audience filter:', e.target.value);
+            // Implement audience filtering
+        });
+    </script>
+</body>
+</html>

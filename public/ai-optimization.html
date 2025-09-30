@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Campaign Optimization - DemandGen Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        accent: '#f59e0b',
+                        malaysia: {
+                            red: '#cc0001',
+                            gold: '#ffd700'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .malaysia-gradient {
+            background: linear-gradient(135deg, #cc0001 0%, #ffd700 100%);
+        }
+        .btn-malaysia {
+            background: linear-gradient(to right, #dc2626, #f59e0b);
+        }
+        .btn-malaysia:hover {
+            background: linear-gradient(to right, #b91c1c, #d97706);
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); }
+        }
+        .optimization-card {
+            transition: all 0.3s ease;
+        }
+        .optimization-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .typing-animation {
+            overflow: hidden;
+            border-right: 2px solid #3b82f6;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #3b82f6; }
+        }
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 malaysia-gradient rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">DemandGen Pro</h1>
+                        <p class="text-xs text-gray-500">AI Campaign Optimization</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                        <span class="text-sm">AI Active</span>
+                    </div>
+                    
+                    <button onclick="window.location.href='analytics-dashboard.html'" class="px-4 py-2 text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Analytics
+                    </button>
+                    
+                    <button onclick="window.location.href='advanced-campaign-builder.html'" class="btn-malaysia text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all">
+                        New Campaign
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- AI Assistant Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center space-x-4">
+                <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center ai-glow">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold">🤖 AI Campaign Optimizer</h2>
+                    <p class="text-blue-100 typing-animation" id="typing-text">Analyzing your campaigns and optimizing for maximum ROAS...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- AI Optimization Status -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Optimization Score -->
+            <div class="bg-white p-6 rounded-lg shadow border text-center">
+                <div class="relative w-24 h-24 mx-auto mb-4">
+                    <svg class="progress-ring w-24 h-24">
+                        <circle class="progress-ring-circle stroke-gray-200" stroke-width="4" fill="transparent" r="40" cx="48" cy="48"/>
+                        <circle class="progress-ring-circle stroke-green-500" stroke-width="4" fill="transparent" r="40" cx="48" cy="48" stroke-dasharray="251.2" stroke-dashoffset="62.8"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-green-600">85%</span>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900">Optimization Score</h3>
+                <p class="text-sm text-gray-500">Campaign health rating</p>
+            </div>
+
+            <!-- AI Recommendations Applied -->
+            <div class="bg-white p-6 rounded-lg shadow border text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-2">12</div>
+                <h3 class="text-lg font-semibold text-gray-900">Recommendations Applied</h3>
+                <p class="text-sm text-gray-500">This week</p>
+            </div>
+
+            <!-- Performance Improvement -->
+            <div class="bg-white p-6 rounded-lg shadow border text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <div class="text-3xl font-bold text-green-600 mb-2">+28%</div>
+                <h3 class="text-lg font-semibold text-gray-900">ROAS Improvement</h3>
+                <p class="text-sm text-gray-500">Since AI activation</p>
+            </div>
+        </div>
+
+        <!-- Active AI Optimizations -->
+        <div class="bg-white rounded-lg shadow border p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold">🔄 Active AI Optimizations</h3>
+                <div class="flex items-center space-x-2 text-sm text-green-600">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span>Running continuously</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Smart Bidding -->
+                <div class="optimization-card border border-blue-200 rounded-lg p-4 bg-blue-50">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-900">Smart Bidding</h4>
+                            <p class="text-xs text-blue-700">Target ROAS optimization</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Current Target ROAS:</span>
+                            <span class="font-medium">4.2x</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Bid Adjustments:</span>
+                            <span class="font-medium text-green-600">+15%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Performance:</span>
+                            <span class="font-medium text-green-600">+12% ROAS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audience Optimization -->
+                <div class="optimization-card border border-purple-200 rounded-lg p-4 bg-purple-50">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-purple-900">Audience Optimization</h4>
+                            <p class="text-xs text-purple-700">Malaysia-specific targeting</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Top Audience:</span>
+                            <span class="font-medium">🚬 Perokok & Vape</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Reach Expansion:</span>
+                            <span class="font-medium text-green-600">+25%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">CTR Improvement:</span>
+                            <span class="font-medium text-green-600">+18%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Creative Optimization -->
+                <div class="optimization-card border border-green-200 rounded-lg p-4 bg-green-50">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-green-900">Creative Rotation</h4>
+                            <p class="text-xs text-green-700">Dynamic asset optimization</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Best Performing:</span>
+                            <span class="font-medium">Headline A</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Asset Rotation:</span>
+                            <span class="font-medium text-blue-600">Auto</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Conversion Rate:</span>
+                            <span class="font-medium text-green-600">+22%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Recommendations Queue -->
+        <div class="bg-white rounded-lg shadow border p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold">💡 AI Recommendations Queue</h3>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    Apply All High Impact
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <!-- High Impact Recommendation -->
+                <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">HIGH IMPACT</span>
+                                <span class="text-sm text-gray-500">Projected +RM 3,200 revenue</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-900 mb-2">Increase Budget for Top Performing Campaign</h4>
+                            <p class="text-sm text-gray-600 mb-3">"Perokok & Vape Malaysia Q4" is performing 40% above target ROAS. AI recommends increasing daily budget from RM 150 to RM 200 (+33%) to capture more high-intent traffic during peak hours (8-10 PM).</p>
+                            <div class="flex items-center space-x-3">
+                                <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">Apply Now</button>
+                                <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm">Schedule for Tomorrow</button>
+                                <button class="px-4 py-2 text-gray-500 hover:text-gray-700 text-sm">Dismiss</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medium Impact Recommendation -->
+                <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">MEDIUM IMPACT</span>
+                                <span class="text-sm text-gray-500">Projected +RM 1,800 revenue</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-900 mb-2">Add Malaysia-Specific Negative Keywords</h4>
+                            <p class="text-sm text-gray-600 mb-3">AI detected irrelevant traffic from keywords: "free", "murah", "percuma". Adding these as negative keywords can improve quality score by 15% and reduce wasted spend by RM 45/day.</p>
+                            <div class="flex items-center space-x-3">
+                                <button class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 text-sm">Apply Keywords</button>
+                                <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm">Review List</button>
+                                <button class="px-4 py-2 text-gray-500 hover:text-gray-700 text-sm">Dismiss</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Low Impact Recommendation -->
+                <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">OPTIMIZATION</span>
+                                <span class="text-sm text-gray-500">Projected +RM 900 revenue</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-900 mb-2">Optimize Ad Schedule for Malaysia Time Zone</h4>
+                            <p class="text-sm text-gray-600 mb-3">Peak conversion hours identified: 8-10 PM (Malaysia time). Consider increasing bids by 20% during these hours and reducing by 10% during 2-6 AM when performance is 60% below average.</p>
+                            <div class="flex items-center space-x-3">
+                                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">Set Schedule</button>
+                                <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm">View Analysis</button>
+                                <button class="px-4 py-2 text-gray-500 hover:text-gray-700 text-sm">Dismiss</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Malaysia-Specific AI Insights -->
+        <div class="bg-gradient-to-r from-red-50 to-yellow-50 border border-red-200 rounded-lg p-6">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                    <span class="text-2xl">🇲🇾</span>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-red-900">Malaysia Market AI Insights</h3>
+                    <p class="text-sm text-red-700">Localized optimization recommendations</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-gray-900 mb-3">🕌 Ramadan Season Optimization</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Increase health & wellness campaigns by 35%</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Adjust ad schedule for Sahur (3-5 AM) and Iftar (7-8 PM)</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span>Pause smoking cessation ads during fasting hours</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg border border-red-200">
+                    <h4 class="font-semibold text-gray-900 mb-3">🏮 Chinese New Year Insights</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Health products see 45% spike in January</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Target Chinese-speaking audiences with Traditional Chinese</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span>Use red/gold color schemes for higher CTR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Typing animation
+        const texts = [
+            "Analyzing your campaigns and optimizing for maximum ROAS...",
+            "Identifying high-performing Malaysia audiences...",
+            "Optimizing bids for peak conversion hours...",
+            "Generating smart recommendations for your campaigns..."
+        ];
+        let textIndex = 0;
+        let charIndex = 0;
+        const typingElement = document.getElementById('typing-text');
+
+        function typeText() {
+            if (charIndex < texts[textIndex].length) {
+                typingElement.textContent = texts[textIndex].substring(0, charIndex + 1);
+                charIndex++;
+                setTimeout(typeText, 50);
+            } else {
+                setTimeout(() => {
+                    charIndex = 0;
+                    textIndex = (textIndex + 1) % texts.length;
+                    typingElement.textContent = '';
+                    typeText();
+                }, 2000);
+            }
+        }
+
+        // Start typing animation
+        typeText();
+
+        // Simulate AI processing
+        setInterval(() => {
+            // Update optimization score randomly
+            const score = Math.floor(Math.random() * 10) + 80;
+            document.querySelector('.progress-ring-circle:last-child').style.strokeDashoffset = 
+                251.2 - (251.2 * score / 100);
+            document.querySelector('.text-2xl.font-bold.text-green-600').textContent = score + '%';
+        }, 5000);
+
+        // Auto-apply recommendations simulation
+        setTimeout(() => {
+            const firstRecommendation = document.querySelector('.border-red-200');
+            if (firstRecommendation) {
+                const applyButton = firstRecommendation.querySelector('button');
+                applyButton.textContent = '✅ Applied';
+                applyButton.className = 'px-4 py-2 bg-green-600 text-white rounded-lg text-sm cursor-not-allowed';
+                applyButton.disabled = true;
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
