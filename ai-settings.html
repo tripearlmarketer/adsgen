@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Settings - DemandGen Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .ai-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        .ai-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .api-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-connected { background-color: #10b981; }
+        .status-disconnected { background-color: #ef4444; }
+        .status-testing { background-color: #f59e0b; animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .feature-badge {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass-effect border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-brain text-purple-600"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-white font-bold text-lg">DemandGen Pro</h1>
+                            <p class="text-white/70 text-xs">AI Configuration</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="modern-user-dashboard.html" class="text-white/80 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                    <a href="modern-campaign-builder.html" class="text-white/80 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Campaigns</a>
+                    <a href="modern-analytics-dashboard.html" class="text-white/80 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Analytics</a>
+                    <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-white text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <div class="glass-effect rounded-2xl p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-white mb-2">AI Configuration</h1>
+                    <p class="text-white/70">Configure your AI providers for campaign optimization and insights</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="glass-effect px-4 py-2 rounded-lg">
+                        <span class="text-white/70 text-sm">AI Status:</span>
+                        <span id="overall-status" class="text-green-400 font-semibold ml-2">2/4 Connected</span>
+                    </div>
+                    <button onclick="testAllConnections()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-all">
+                        <i class="fas fa-sync-alt mr-2"></i>Test All
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Provider Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- OpenAI GPT -->
+            <div class="glass-effect rounded-2xl p-6 ai-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-robot text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-lg">OpenAI GPT</h3>
+                            <p class="text-white/70 text-sm">GPT-4 & GPT-3.5 Turbo</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="api-status status-connected" id="openai-status"></span>
+                        <span class="text-green-400 text-sm font-medium">Connected</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">API Key</label>
+                        <div class="relative">
+                            <input type="password" id="openai-key" placeholder="sk-..." 
+                                   class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30">
+                            <button onclick="togglePassword('openai-key')" class="absolute right-3 top-3 text-white/50 hover:text-white">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Model Selection</label>
+                        <select id="openai-model" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30">
+                            <option value="gpt-4">GPT-4 (Recommended)</option>
+                            <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                            <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Faster)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="feature-badge">Campaign Optimization</span>
+                        <span class="feature-badge">Ad Copy Generation</span>
+                        <span class="feature-badge">Audience Insights</span>
+                    </div>
+
+                    <div class="flex space-x-3">
+                        <button onclick="testConnection('openai')" class="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 py-2 px-4 rounded-lg transition-all">
+                            <i class="fas fa-plug mr-2"></i>Test Connection
+                        </button>
+                        <button onclick="saveConfig('openai')" class="flex-1 bg-white/20 hover:bg-white/30 text-white py-2 px-4 rounded-lg transition-all">
+                            <i class="fas fa-save mr-2"></i>Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Claude AI -->
+            <div class="glass-effect rounded-2xl p-6 ai-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-brain text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-lg">Claude AI</h3>
+                            <p class="text-white/70 text-sm">Claude 3 Opus & Sonnet</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="api-status status-disconnected" id="claude-status"></span>
+                        <span class="text-red-400 text-sm font-medium">Not Connected</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">API Key</label>
+                        <div class="relative">
+                            <input type="password" id="claude-key" placeholder="sk-ant-..." 
+                                   class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30">
+                            <button onclick="togglePassword('claude-key')" class="absolute right-3 top-3 text-white/50 hover:text-white">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Model Selection</label>
+                        <select id="claude-model" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30">
+                            <option value="claude-3-opus">Claude 3 Opus (Best Quality)</option>
+                            <option value="claude-3-sonnet">Claude 3 Sonnet (Balanced)</option>
+                            <option value="claude-3-haiku">Claude 3 Haiku (Fastest)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="feature-badge">Content Analysis</span>
+                        <span class="feature-badge">Strategy Planning</span>
+                        <span class="feature-badge">Performance Review</span>
+                    </div>
+
+                    <div class="flex space-x-3">
+                        <button onclick="testConnection('claude')" class="flex-1 bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 py-2 px-4 rounded-lg transition-all">
+                            <i class="fas fa-plug mr-2"></i>Test Connection
+                        </button>
+                        <button onclick="saveConfig('claude')" class="flex-1 bg-white/20 hover:bg-white/30 text-white py-2 px-4 rounded-lg transition-all">
+                            <i class="fas fa-save mr-2"></i>Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Google Gemini -->
+            <div class="glass-effect rounded-2xl p-6 ai-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fab fa-google text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-lg">Google Gemini</h3>
+                            <p class="text-white/70 text-sm">Gemini Pro & Ultra</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="api-status status-connected" id="gemini-status"></span>
+                        <span class="text-green-400 text-sm font-medium">Connected</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">API Key</label>
+                        <div class="relative">
+                            <input type="password" id="gemini-key" placeholder="AIza..." 
+                                   class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30">
+                            <button onclick="togglePassword('gemini-key')" class="absolute right-3 top-3 text-white/50 hover:text-white">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">Model Selection</label>
+                        <select id="gemini-model" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30">
+                            <option value="gemini-pro">Gemini Pro (Recommended)</option>
+                            <option value="gemini-ultra">Gemini Ultra (Premium)</option>
+                            <option value="gemini-pro-vision">Gemini Pro Vision</option>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="feature-badge">Google Ads Integration</span>
+                        <span class="feature-badge">Market Analysis</span>
+                        <span class="feature-badge">Trend Prediction</span>
+                    </div>
+
+                    <div class="flex space-x-3">
+                        <button onclick="testConnection('gemini')" class="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 py-2 px-4 rounded-lg transition-all">
+                            <i class="fas fa-plug mr-2"></i>Test Connection
+                        </button>
+                        <button onclick="saveConfig('gemini')" class="flex-1 bg-white/20 hover:bg-white/30 text-white py-2 px-4 rounded-lg transition-all">
+                            <i class="fas fa-save mr-2"></i>Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom AI -->
+            <div class="glass-effect rounded-2xl p-6 ai-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-cogs text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold text-lg">Custom AI</h3>
+                            <p class="text-white/70 text-sm">Your own AI endpoint</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="api-status status-disconnected" id="custom-status"></span>
+                        <span class="text-red-400 text-sm font-medium">Not Connected</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">API Endpoint</label>
+                        <input type="url" id="custom-endpoint" placeholder="https://your-ai-api.com/v1/chat" 
+                               class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-white/80 text-sm font-medium mb-2">API Key</label>
+                        <div class="relative">
+                            <input type="password" id="custom-key" placeholder="Your API key..." 
+                                   class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30">
+                            <button onclick="togglePassword('custom-key')" class="absolute right-3 top-3 text-white/50 hover:text-white">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="feature-badge">Custom Logic</span>
+                        <span class="feature-badge">Private Data</span>
+                        <span class="feature-badge">Full Control</span>
+                    </div>
+
+                    <div class="flex space-x-3">
+                        <button onclick="testConnection('custom')" class="flex-1 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 py-2 px-4 rounded-lg transition-all">
+                            <i class="fas fa-plug mr-2"></i>Test Connection
+                        </button>
+                        <button onclick="saveConfig('custom')" class="flex-1 bg-white/20 hover:bg-white/30 text-white py-2 px-4 rounded-lg transition-all">
+                            <i class="fas fa-save mr-2"></i>Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Usage Settings -->
+        <div class="glass-effect rounded-2xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-6">AI Usage Configuration</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Primary AI Selection -->
+                <div>
+                    <label class="block text-white/80 text-sm font-medium mb-3">Primary AI Provider</label>
+                    <select id="primary-ai" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30">
+                        <option value="openai">OpenAI GPT (Recommended)</option>
+                        <option value="claude">Claude AI</option>
+                        <option value="gemini">Google Gemini</option>
+                        <option value="custom">Custom AI</option>
+                    </select>
+                    <p class="text-white/60 text-xs mt-2">Used for campaign optimization and insights</p>
+                </div>
+
+                <!-- Fallback AI -->
+                <div>
+                    <label class="block text-white/80 text-sm font-medium mb-3">Fallback AI Provider</label>
+                    <select id="fallback-ai" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-white/30">
+                        <option value="none">No Fallback</option>
+                        <option value="openai">OpenAI GPT</option>
+                        <option value="claude">Claude AI</option>
+                        <option value="gemini">Google Gemini</option>
+                    </select>
+                    <p class="text-white/60 text-xs mt-2">Used when primary AI is unavailable</p>
+                </div>
+
+                <!-- AI Features -->
+                <div class="md:col-span-2">
+                    <label class="block text-white/80 text-sm font-medium mb-3">Enabled AI Features</label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="checkbox" checked class="w-4 h-4 text-purple-600 bg-white/10 border-white/20 rounded focus:ring-purple-500">
+                            <span class="text-white/80 text-sm">Campaign Optimization</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="checkbox" checked class="w-4 h-4 text-purple-600 bg-white/10 border-white/20 rounded focus:ring-purple-500">
+                            <span class="text-white/80 text-sm">Ad Copy Generation</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="checkbox" checked class="w-4 h-4 text-purple-600 bg-white/10 border-white/20 rounded focus:ring-purple-500">
+                            <span class="text-white/80 text-sm">Audience Insights</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-purple-600 bg-white/10 border-white/20 rounded focus:ring-purple-500">
+                            <span class="text-white/80 text-sm">Bid Recommendations</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="checkbox" checked class="w-4 h-4 text-purple-600 bg-white/10 border-white/20 rounded focus:ring-purple-500">
+                            <span class="text-white/80 text-sm">Performance Analysis</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-purple-600 bg-white/10 border-white/20 rounded focus:ring-purple-500">
+                            <span class="text-white/80 text-sm">Keyword Suggestions</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="checkbox" checked class="w-4 h-4 text-purple-600 bg-white/10 border-white/20 rounded focus:ring-purple-500">
+                            <span class="text-white/80 text-sm">Malaysia Insights</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-purple-600 bg-white/10 border-white/20 rounded focus:ring-purple-500">
+                            <span class="text-white/80 text-sm">Auto Responses</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usage Statistics -->
+        <div class="glass-effect rounded-2xl p-6">
+            <h2 class="text-2xl font-bold text-white mb-6">AI Usage Statistics</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white mb-2">2,847</div>
+                    <div class="text-white/70 text-sm">Total AI Requests</div>
+                    <div class="text-green-400 text-xs mt-1">+12% this month</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white mb-2">RM 89.50</div>
+                    <div class="text-white/70 text-sm">AI Costs This Month</div>
+                    <div class="text-blue-400 text-xs mt-1">Within budget</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white mb-2">98.5%</div>
+                    <div class="text-white/70 text-sm">Success Rate</div>
+                    <div class="text-green-400 text-xs mt-1">Excellent</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white mb-2">1.2s</div>
+                    <div class="text-white/70 text-sm">Avg Response Time</div>
+                    <div class="text-green-400 text-xs mt-1">Fast</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Test AI connection
+        async function testConnection(provider) {
+            const statusElement = document.getElementById(`${provider}-status`);
+            const statusText = statusElement.nextElementSibling;
+            
+            // Set testing state
+            statusElement.className = 'api-status status-testing';
+            statusText.textContent = 'Testing...';
+            statusText.className = 'text-yellow-400 text-sm font-medium';
+            
+            // Simulate API test (in production, this would make actual API calls)
+            setTimeout(() => {
+                const success = Math.random() > 0.3; // 70% success rate for demo
+                
+                if (success) {
+                    statusElement.className = 'api-status status-connected';
+                    statusText.textContent = 'Connected';
+                    statusText.className = 'text-green-400 text-sm font-medium';
+                    showNotification(`${provider.toUpperCase()} connection successful!`, 'success');
+                } else {
+                    statusElement.className = 'api-status status-disconnected';
+                    statusText.textContent = 'Connection Failed';
+                    statusText.className = 'text-red-400 text-sm font-medium';
+                    showNotification(`${provider.toUpperCase()} connection failed. Check your API key.`, 'error');
+                }
+                
+                updateOverallStatus();
+            }, 2000);
+        }
+
+        // Save AI configuration
+        function saveConfig(provider) {
+            const keyInput = document.getElementById(`${provider}-key`);
+            const modelSelect = document.getElementById(`${provider}-model`);
+            
+            if (!keyInput.value.trim()) {
+                showNotification('Please enter an API key', 'error');
+                return;
+            }
+            
+            // In production, this would save to backend
+            const config = {
+                provider: provider,
+                apiKey: keyInput.value,
+                model: modelSelect ? modelSelect.value : null,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem(`ai_config_${provider}`, JSON.stringify(config));
+            showNotification(`${provider.toUpperCase()} configuration saved!`, 'success');
+        }
+
+        // Test all connections
+        function testAllConnections() {
+            const providers = ['openai', 'claude', 'gemini', 'custom'];
+            providers.forEach(provider => {
+                const keyInput = document.getElementById(`${provider}-key`);
+                if (keyInput && keyInput.value.trim()) {
+                    testConnection(provider);
+                }
+            });
+        }
+
+        // Update overall status
+        function updateOverallStatus() {
+            const statusElements = document.querySelectorAll('.api-status');
+            let connected = 0;
+            let total = 0;
+            
+            statusElements.forEach(element => {
+                if (element.classList.contains('status-connected')) {
+                    connected++;
+                }
+                total++;
+            });
+            
+            document.getElementById('overall-status').textContent = `${connected}/${total} Connected`;
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white z-50 ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            }`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+                    ${message}
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Load saved configurations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const providers = ['openai', 'claude', 'gemini', 'custom'];
+            
+            providers.forEach(provider => {
+                const saved = localStorage.getItem(`ai_config_${provider}`);
+                if (saved) {
+                    const config = JSON.parse(saved);
+                    const keyInput = document.getElementById(`${provider}-key`);
+                    const modelSelect = document.getElementById(`${provider}-model`);
+                    
+                    if (keyInput) keyInput.value = config.apiKey;
+                    if (modelSelect && config.model) modelSelect.value = config.model;
+                    
+                    // Set as connected if API key exists
+                    if (config.apiKey) {
+                        const statusElement = document.getElementById(`${provider}-status`);
+                        const statusText = statusElement.nextElementSibling;
+                        statusElement.className = 'api-status status-connected';
+                        statusText.textContent = 'Connected';
+                        statusText.className = 'text-green-400 text-sm font-medium';
+                    }
+                }
+            });
+            
+            updateOverallStatus();
+        });
+    </script>
+</body>
+</html>
