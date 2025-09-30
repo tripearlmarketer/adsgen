@@ -347,22 +347,22 @@
             <div class="metric-card rounded-2xl p-6 animate-slide-up" style="animation-delay: 0.5s">
                 <h3 class="text-xl font-bold text-gray-900 mb-6">Quick Actions</h3>
                 <div class="space-y-4">
-                    <button onclick="window.location.href='modern-campaign-builder.html'" class="action-btn w-full text-white py-4 px-6 rounded-xl font-semibold flex items-center justify-center space-x-2 relative overflow-hidden cursor-pointer">
+                    <button class="action-btn w-full text-white py-4 px-6 rounded-xl font-semibold flex items-center justify-center space-x-2 relative overflow-hidden">
                         <i data-lucide="plus" class="w-5 h-5"></i>
                         <span>Create Campaign</span>
                     </button>
                     
-                    <button onclick="window.location.href='modern-creative-library.html'" class="w-full bg-white border-2 border-gray-200 text-gray-700 py-4 px-6 rounded-xl font-semibold hover:border-blue-300 hover:text-blue-600 transition-all flex items-center justify-center space-x-2 cursor-pointer">
+                    <button class="w-full bg-white border-2 border-gray-200 text-gray-700 py-4 px-6 rounded-xl font-semibold hover:border-blue-300 hover:text-blue-600 transition-all flex items-center justify-center space-x-2">
                         <i data-lucide="upload" class="w-5 h-5"></i>
                         <span>Upload Assets</span>
                     </button>
                     
-                    <button onclick="window.location.href='modern-analytics-dashboard.html'" class="w-full bg-white border-2 border-gray-200 text-gray-700 py-4 px-6 rounded-xl font-semibold hover:border-purple-300 hover:text-purple-600 transition-all flex items-center justify-center space-x-2 cursor-pointer">
+                    <button class="w-full bg-white border-2 border-gray-200 text-gray-700 py-4 px-6 rounded-xl font-semibold hover:border-purple-300 hover:text-purple-600 transition-all flex items-center justify-center space-x-2">
                         <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
                         <span>View Analytics</span>
                     </button>
                     
-                    <button onclick="alert('📊 Report Generated Successfully!\n\nYour campaign performance report has been generated and sent to: tripearlmarketer@gmail.com\n\nReport includes:\n• Campaign performance metrics\n• Malaysia market insights\n• Festival optimization data\n• AI recommendations'); this.innerHTML='<i data-lucide=\"check\" class=\"w-5 h-5\"></i><span>Report Sent!</span>';" class="w-full bg-white border-2 border-gray-200 text-gray-700 py-4 px-6 rounded-xl font-semibold hover:border-green-300 hover:text-green-600 transition-all flex items-center justify-center space-x-2 cursor-pointer">
+                    <button class="w-full bg-white border-2 border-gray-200 text-gray-700 py-4 px-6 rounded-xl font-semibold hover:border-green-300 hover:text-green-600 transition-all flex items-center justify-center space-x-2">
                         <i data-lucide="file-text" class="w-5 h-5"></i>
                         <span>Generate Report</span>
                     </button>
@@ -602,135 +602,3 @@
     </script>
 </body>
 </html>
-
-<script>
-// Add JavaScript functionality for buttons
-document.addEventListener('DOMContentLoaded', function() {
-    // Create Campaign button functionality
-    const createCampaignBtn = document.querySelector('.action-btn');
-    if (createCampaignBtn) {
-        createCampaignBtn.addEventListener('click', function() {
-            // Show loading state
-            this.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Creating...</span>';
-            
-            // Simulate loading and redirect
-            setTimeout(() => {
-                window.location.href = 'modern-campaign-builder.html';
-            }, 1000);
-        });
-    }
-    
-    // Upload Assets button
-    const uploadBtn = document.querySelector('button:nth-child(2)');
-    if (uploadBtn) {
-        uploadBtn.addEventListener('click', function() {
-            this.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Loading...</span>';
-            setTimeout(() => {
-                window.location.href = 'modern-creative-library.html';
-            }, 800);
-        });
-    }
-    
-    // View Analytics button
-    const analyticsBtn = document.querySelector('button:nth-child(3)');
-    if (analyticsBtn) {
-        analyticsBtn.addEventListener('click', function() {
-            this.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Loading...</span>';
-            setTimeout(() => {
-                window.location.href = 'modern-analytics-dashboard.html';
-            }, 800);
-        });
-    }
-    
-    // Generate Report button
-    const reportBtn = document.querySelector('button:nth-child(4)');
-    if (reportBtn) {
-        reportBtn.addEventListener('click', function() {
-            this.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Generating...</span>';
-            setTimeout(() => {
-                // Show success message
-                alert('📊 Report generated successfully!\n\nYour campaign performance report has been sent to your email: tripearlmarketer@gmail.com');
-                this.innerHTML = '<i data-lucide="file-text" class="w-5 h-5"></i><span>Generate Report</span>';
-            }, 2000);
-        });
-    }
-    
-    // Navigation buttons
-    const navButtons = document.querySelectorAll('nav a');
-    navButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const href = this.getAttribute('href');
-            if (href) {
-                window.location.href = href;
-            }
-        });
-    });
-    
-    // Campaign cards click functionality
-    const campaignCards = document.querySelectorAll('.campaign-card');
-    campaignCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const campaignName = this.querySelector('h4').textContent;
-            alert(`🎯 Opening campaign: ${campaignName}\n\nThis would open the campaign details page with:\n• Performance metrics\n• Audience insights\n• Creative assets\n• Optimization suggestions`);
-        });
-    });
-    
-    // Deepavali campaign button
-    const deepavaliBtn = document.querySelector('.festival-card button');
-    if (deepavaliBtn) {
-        deepavaliBtn.addEventListener('click', function() {
-            this.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i><span>Creating...</span>';
-            setTimeout(() => {
-                window.location.href = 'modern-campaign-builder.html?template=deepavali';
-            }, 1000);
-        });
-    }
-    
-    // View Festival Planner button
-    const festivalPlannerBtn = document.querySelector('.festival-card button:last-child');
-    if (festivalPlannerBtn) {
-        festivalPlannerBtn.addEventListener('click', function() {
-            alert('🎉 Festival Planner\n\nUpcoming Malaysian Festivals:\n\n🪔 Deepavali - Oct 31, 2025\n🎄 Christmas - Dec 25, 2025\n🧧 Chinese New Year - Jan 29, 2026\n🌙 Hari Raya - Mar 30, 2026\n\nEach festival includes:\n• Pre-built campaign templates\n• Cultural audience targeting\n• Festival-specific creatives\n• Optimal timing recommendations');
-        });
-    }
-    
-    // Add hover effects for better UX
-    const allButtons = document.querySelectorAll('button');
-    allButtons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
-            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
-        });
-        
-        button.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
-        });
-    });
-});
-
-// Add some Malaysia-specific notifications
-setTimeout(() => {
-    const notification = document.createElement('div');
-    notification.innerHTML = `
-        <div style="position: fixed; top: 20px; right: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 20px; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); z-index: 1000; max-width: 300px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="background: rgba(255,255,255,0.2); padding: 8px; border-radius: 8px;">
-                    🤖
-                </div>
-                <div>
-                    <div style="font-weight: 600; margin-bottom: 4px;">AI Optimization Active</div>
-                    <div style="font-size: 14px; opacity: 0.9;">Your campaigns are being optimized for Malaysia peak hours (7-9 PM)</div>
-                </div>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(notification);
-    
-    // Auto remove notification after 5 seconds
-    setTimeout(() => {
-        notification.remove();
-    }, 5000);
-}, 3000);
-</script>
