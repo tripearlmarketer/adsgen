@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Builder - DemandGen Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'slide-in': 'slideIn 0.5s ease-out',
+                        'fade-in': 'fadeIn 0.3s ease-in-out',
+                        'scale-in': 'scaleIn 0.2s ease-out',
+                        'pulse-slow': 'pulse 3s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .step-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .step-card.active {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .audience-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .audience-card:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+        
+        .audience-card.selected {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        
+        .primary-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .primary-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .primary-btn:hover::before {
+            left: 100%;
+        }
+        
+        .step-indicator {
+            position: relative;
+        }
+        
+        .step-indicator.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .festival-badge {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            animation: pulse 2s infinite;
+        }
+        
+        .malaysia-flag {
+            background: linear-gradient(to right, #cc0000 0%, #cc0000 50%, #ffffff 50%, #ffffff 100%);
+            background-size: 20px 10px;
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            background: rgba(255, 255, 255, 1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass-nav sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                        <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold gradient-text">DemandGen Pro</h1>
+                        <p class="text-xs text-gray-500">Campaign Builder</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-800 font-medium transition-colors">Save Draft</button>
+                    <button class="text-gray-600 hover:text-gray-800 font-medium transition-colors">Exit Builder</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Progress Bar -->
+    <div class="bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-2xl font-bold text-white">Create New Campaign</h2>
+                <div class="text-white text-sm">Step <span id="currentStep">1</span> of 5</div>
+            </div>
+            <div class="w-full bg-white bg-opacity-20 rounded-full h-2">
+                <div id="progressBar" class="progress-bar h-2 rounded-full" style="width: 20%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step Indicators -->
+    <div class="max-w-7xl mx-auto px-6 py-6">
+        <div class="flex items-center justify-center space-x-8 mb-8">
+            <div class="flex items-center space-x-2">
+                <div class="step-indicator completed w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">1</div>
+                <span class="text-white font-medium">Campaign Info</span>
+            </div>
+            <div class="w-12 h-0.5 bg-white bg-opacity-30"></div>
+            <div class="flex items-center space-x-2">
+                <div class="step-indicator w-8 h-8 bg-white bg-opacity-30 rounded-full flex items-center justify-center text-white font-semibold">2</div>
+                <span class="text-white opacity-70">Audience</span>
+            </div>
+            <div class="w-12 h-0.5 bg-white bg-opacity-30"></div>
+            <div class="flex items-center space-x-2">
+                <div class="step-indicator w-8 h-8 bg-white bg-opacity-30 rounded-full flex items-center justify-center text-white font-semibold">3</div>
+                <span class="text-white opacity-70">Creative</span>
+            </div>
+            <div class="w-12 h-0.5 bg-white bg-opacity-30"></div>
+            <div class="flex items-center space-x-2">
+                <div class="step-indicator w-8 h-8 bg-white bg-opacity-30 rounded-full flex items-center justify-center text-white font-semibold">4</div>
+                <span class="text-white opacity-70">Budget</span>
+            </div>
+            <div class="w-12 h-0.5 bg-white bg-opacity-30"></div>
+            <div class="flex items-center space-x-2">
+                <div class="step-indicator w-8 h-8 bg-white bg-opacity-30 rounded-full flex items-center justify-center text-white font-semibold">5</div>
+                <span class="text-white opacity-70">Review</span>
+            </div>
+        </div>
+
+        <!-- Step Content -->
+        <div id="stepContent" class="max-w-4xl mx-auto">
+            <!-- Step 1: Campaign Info -->
+            <div id="step1" class="step-card rounded-2xl p-8 active">
+                <div class="text-center mb-8">
+                    <div class="floating-element w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="target" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Campaign Information</h3>
+                    <p class="text-gray-600">Let's start with the basics of your Google Ads campaign</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Campaign Name</label>
+                        <input type="text" class="input-field w-full px-4 py-3 rounded-xl outline-none" placeholder="e.g., Smoking Cessation Malaysia Q4 2025" value="Smoking Cessation Malaysia Q4">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Campaign Type</label>
+                            <select class="input-field w-full px-4 py-3 rounded-xl outline-none">
+                                <option>Demand Generation</option>
+                                <option>Search</option>
+                                <option>Display</option>
+                                <option>Video</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Campaign Goal</label>
+                            <select class="input-field w-full px-4 py-3 rounded-xl outline-none">
+                                <option>Lead Generation</option>
+                                <option>Sales</option>
+                                <option>Brand Awareness</option>
+                                <option>Website Traffic</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Landing Page URL</label>
+                        <input type="url" class="input-field w-full px-4 py-3 rounded-xl outline-none" placeholder="https://your-landing-page.com" value="https://quit-smoking-malaysia.com">
+                    </div>
+
+                    <!-- Malaysia Market Optimization -->
+                    <div class="bg-gradient-to-r from-red-50 to-blue-50 rounded-xl p-6 border border-red-200">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="malaysia-flag w-8 h-6 rounded"></div>
+                            <h4 class="font-bold text-gray-900">Malaysia Market Optimization</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Primary Language</label>
+                                <select class="input-field w-full px-3 py-2 rounded-lg outline-none">
+                                    <option>Bahasa Malaysia</option>
+                                    <option>English</option>
+                                    <option>Chinese (Simplified)</option>
+                                    <option>Tamil</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Target States</label>
+                                <select class="input-field w-full px-3 py-2 rounded-lg outline-none" multiple>
+                                    <option selected>Kuala Lumpur</option>
+                                    <option selected>Selangor</option>
+                                    <option>Penang</option>
+                                    <option>Johor</option>
+                                    <option>Perak</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-8">
+                    <button onclick="nextStep()" class="primary-btn text-white px-8 py-3 rounded-xl font-semibold flex items-center space-x-2">
+                        <span>Continue to Audience</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Audience Selection -->
+            <div id="step2" class="step-card rounded-2xl p-8 hidden">
+                <div class="text-center mb-8">
+                    <div class="floating-element w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="users" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Target Audience</h3>
+                    <p class="text-gray-600">Choose your ideal audience segments for maximum impact</p>
+                </div>
+
+                <!-- Affinity Audiences -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <i data-lucide="heart" class="w-5 h-5 mr-2 text-red-500"></i>
+                        Affinity Audiences
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="audience-card selected rounded-xl p-4">
+                            <div class="category-icon bg-red-100 text-red-600">🚬</div>
+                            <h5 class="font-semibold text-gray-900 mb-1">Tobacco & Smoking</h5>
+                            <p class="text-sm text-gray-600 mb-2">People interested in smoking products</p>
+                            <div class="text-xs text-blue-600 font-medium">450K reach</div>
+                        </div>
+                        
+                        <div class="audience-card rounded-xl p-4">
+                            <div class="category-icon bg-green-100 text-green-600">💪</div>
+                            <h5 class="font-semibold text-gray-900 mb-1">Health & Fitness</h5>
+                            <p class="text-sm text-gray-600 mb-2">Health-conscious individuals</p>
+                            <div class="text-xs text-blue-600 font-medium">680K reach</div>
+                        </div>
+                        
+                        <div class="audience-card rounded-xl p-4">
+                            <div class="category-icon bg-blue-100 text-blue-600">🏥</div>
+                            <h5 class="font-semibold text-gray-900 mb-1">Medical Treatments</h5>
+                            <p class="text-sm text-gray-600 mb-2">People seeking medical solutions</p>
+                            <div class="text-xs text-blue-600 font-medium">320K reach</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- In-Market Audiences -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <i data-lucide="shopping-cart" class="w-5 h-5 mr-2 text-green-500"></i>
+                        In-Market Audiences
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="audience-card selected rounded-xl p-4">
+                            <div class="category-icon bg-purple-100 text-purple-600">🛒</div>
+                            <h5 class="font-semibold text-gray-900 mb-1">Smoking Cessation Products</h5>
+                            <p class="text-sm text-gray-600 mb-2">Ready to buy quit-smoking aids</p>
+                            <div class="text-xs text-green-600 font-medium">High intent</div>
+                        </div>
+                        
+                        <div class="audience-card rounded-xl p-4">
+                            <div class="category-icon bg-yellow-100 text-yellow-600">💊</div>
+                            <h5 class="font-semibold text-gray-900 mb-1">Health Supplements</h5>
+                            <p class="text-sm text-gray-600 mb-2">Shopping for health products</p>
+                            <div class="text-xs text-green-600 font-medium">High intent</div>
+                        </div>
+                        
+                        <div class="audience-card rounded-xl p-4">
+                            <div class="category-icon bg-orange-100 text-orange-600">🏃</div>
+                            <h5 class="font-semibold text-gray-900 mb-1">Fitness Equipment</h5>
+                            <p class="text-sm text-gray-600 mb-2">Looking for fitness gear</p>
+                            <div class="text-xs text-green-600 font-medium">Medium intent</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Malaysia-Specific Audiences -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <div class="malaysia-flag w-6 h-4 rounded mr-2"></div>
+                        Malaysia Market Segments
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="audience-card selected rounded-xl p-4">
+                            <div class="category-icon bg-red-100 text-red-600">🚬</div>
+                            <h5 class="font-semibold text-gray-900 mb-1">Perokok & Vape</h5>
+                            <p class="text-sm text-gray-600 mb-2">Malaysian smokers and vapers</p>
+                            <div class="text-xs text-blue-600 font-medium">280K reach</div>
+                        </div>
+                        
+                        <div class="audience-card rounded-xl p-4">
+                            <div class="category-icon bg-green-100 text-green-600">🌿</div>
+                            <h5 class="font-semibold text-gray-900 mb-1">Kesihatan & Wellness</h5>
+                            <p class="text-sm text-gray-600 mb-2">Health-focused Malaysians</p>
+                            <div class="text-xs text-blue-600 font-medium">420K reach</div>
+                        </div>
+                        
+                        <div class="audience-card rounded-xl p-4">
+                            <div class="category-icon bg-blue-100 text-blue-600">🚛</div>
+                            <h5 class="font-semibent text-gray-900 mb-1">Pekerja Luar</h5>
+                            <p class="text-sm text-gray-600 mb-2">Outdoor workers in Malaysia</p>
+                            <div class="text-xs text-blue-600 font-medium">150K reach</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Festival Targeting -->
+                <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200 mb-8">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="festival-badge w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm">🪔</div>
+                        <h4 class="font-bold text-gray-900">Festival Targeting Available</h4>
+                    </div>
+                    <p class="text-gray-700 mb-4">Deepavali is tomorrow! Target Tamil community with festival-specific messaging.</p>
+                    <div class="flex items-center space-x-4">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded border-gray-300" checked>
+                            <span class="text-sm font-medium">Enable Deepavali targeting</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="rounded border-gray-300">
+                            <span class="text-sm font-medium">Chinese New Year (upcoming)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button onclick="prevStep()" class="bg-gray-200 text-gray-700 px-8 py-3 rounded-xl font-semibold hover:bg-gray-300 transition-colors flex items-center space-x-2">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                        <span>Back</span>
+                    </button>
+                    <button onclick="nextStep()" class="primary-btn text-white px-8 py-3 rounded-xl font-semibold flex items-center space-x-2">
+                        <span>Continue to Creative</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Additional steps would go here... -->
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        let currentStepNum = 1;
+        const totalSteps = 5;
+
+        function nextStep() {
+            if (currentStepNum < totalSteps) {
+                // Hide current step
+                document.getElementById(`step${currentStepNum}`).classList.add('hidden');
+                document.getElementById(`step${currentStepNum}`).classList.remove('active');
+                
+                // Show next step
+                currentStepNum++;
+                const nextStepEl = document.getElementById(`step${currentStepNum}`);
+                if (nextStepEl) {
+                    nextStepEl.classList.remove('hidden');
+                    nextStepEl.classList.add('active');
+                }
+                
+                // Update progress
+                updateProgress();
+            }
+        }
+
+        function prevStep() {
+            if (currentStepNum > 1) {
+                // Hide current step
+                document.getElementById(`step${currentStepNum}`).classList.add('hidden');
+                document.getElementById(`step${currentStepNum}`).classList.remove('active');
+                
+                // Show previous step
+                currentStepNum--;
+                document.getElementById(`step${currentStepNum}`).classList.remove('hidden');
+                document.getElementById(`step${currentStepNum}`).classList.add('active');
+                
+                // Update progress
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentStepNum / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('currentStep').textContent = currentStepNum;
+            
+            // Update step indicators
+            for (let i = 1; i <= totalSteps; i++) {
+                const indicator = document.querySelector(`.step-indicator:nth-child(${i * 2 - 1})`);
+                if (i <= currentStepNum) {
+                    indicator.classList.add('completed');
+                    indicator.classList.remove('bg-white', 'bg-opacity-30');
+                    indicator.classList.add('bg-blue-500');
+                } else {
+                    indicator.classList.remove('completed', 'bg-blue-500');
+                    indicator.classList.add('bg-white', 'bg-opacity-30');
+                }
+            }
+        }
+
+        // Audience card selection
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.audience-card')) {
+                const card = e.target.closest('.audience-card');
+                card.classList.toggle('selected');
+            }
+        });
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
