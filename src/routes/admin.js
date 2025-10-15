@@ -53,32 +53,52 @@ async function adminRoutes(fastify, options) {
     try {
       const db = fastify.sqlite;
       const { page = 1, limit = 20, search = '' } = request.query;
-      const offset = (page - 1) * limit;
-      
-      let query = `
+
+      const parsedPage = Math.max(Number.parseInt(page, 10) || 1, 1);
+      const parsedLimit = Math.min(Math.max(Number.parseInt(limit, 10) || 20, 1), 100);
+      const offset = (parsedPage - 1) * parsedLimit;
+      const searchTerm = typeof search === 'string' ? search.trim() : '';
+
+      const filters = ['u.role != ?'];
+      const filterParams = ['super_admin'];
+
+      if (searchTerm) {
+        filters.push('(u.name LIKE ? OR u.email LIKE ?)');
+        const likeSearch = `%${searchTerm}%`;
+        filterParams.push(likeSearch, likeSearch);
+      }
+
+      const whereClause = filters.length ? ` WHERE ${filters.join(' AND ')}` : '';
+
+      const listQuery = `
         SELECT u.id, u.name, u.email, u.role, u.status, u.created_at,
                us.plan_type, us.status as subscription_status
         FROM users u
         LEFT JOIN user_subscriptions us ON u.id = us.user_id
-        WHERE u.role != 'super_admin'
+        ${whereClause}
+        ORDER BY u.created_at DESC
+        LIMIT ? OFFSET ?
       `;
-      
-      if (search) {
-        query += ` AND (u.name LIKE '%${search}%' OR u.email LIKE '%${search}%')`;
-      }
-      
-      query += ` ORDER BY u.created_at DESC LIMIT ${limit} OFFSET ${offset}`;
-      
-      const users = await db.all(query);
-      const totalCount = await db.get('SELECT COUNT(*) as count FROM users WHERE role != "super_admin"');
-      
+
+      const listParams = [...filterParams, parsedLimit, offset];
+
+      const users = await db.all(listQuery, listParams);
+      const totalCount = await db.get(
+        `
+          SELECT COUNT(*) as count
+          FROM users u
+          ${whereClause}
+        `,
+        filterParams
+      );
+
       return {
         users,
         pagination: {
-          page: parseInt(page),
-          limit: parseInt(limit),
+          page: parsedPage,
+          limit: parsedLimit,
           total: totalCount.count,
-          pages: Math.ceil(totalCount.count / limit)
+          pages: Math.ceil(totalCount.count / parsedLimit)
         }
       };
     } catch (error) {
@@ -216,25 +236,36 @@ async function adminRoutes(fastify, options) {
     try {
       const db = fastify.sqlite;
       const { status = 'all', priority = 'all' } = request.query;
-      
+      const statusFilter = typeof status === 'string' ? status : 'all';
+      const priorityFilter = typeof priority === 'string' ? priority : 'all';
+
       let query = `
         SELECT st.*, u.name, u.email
         FROM support_tickets st
         JOIN users u ON st.user_id = u.id
       `;
-      
+
       const conditions = [];
-      if (status !== 'all') conditions.push(`st.status = '${status}'`);
-      if (priority !== 'all') conditions.push(`st.priority = '${priority}'`);
-      
+      const params = [];
+
+      if (statusFilter !== 'all') {
+        conditions.push('st.status = ?');
+        params.push(statusFilter);
+      }
+
+      if (priorityFilter !== 'all') {
+        conditions.push('st.priority = ?');
+        params.push(priorityFilter);
+      }
+
       if (conditions.length > 0) {
         query += ' WHERE ' + conditions.join(' AND ');
       }
-      
+
       query += ' ORDER BY st.created_at DESC';
-      
-      const tickets = await db.all(query);
-      
+
+      const tickets = await db.all(query, params);
+
       return { tickets };
     } catch (error) {
       reply.status(500).send({ error: 'Failed to fetch support tickets' });
